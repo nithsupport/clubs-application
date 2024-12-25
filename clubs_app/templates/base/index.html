@@ -1,0 +1,276 @@
+{% include 'main.html' %}
+{% load static %}
+
+{% load custom_tags %}
+{% block title %} Clubs - PES University{% endblock title %}
+{% block description %}<meta name="description" content="clubs - PES University" />{% endblock %}
+{% block content %}
+
+            	
+
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->	
+    <!-- wrapper  -->	
+    <div id="wrapper">
+        <!-- content -->	
+        <div class="content">
+            {% if tags|get_tags %}
+            <!-- breadcrumbs-->
+            <div class="breadcrumbs fw-breadcrumbs smpar fl-wrap ">
+                <div class="container padding-top">
+                    <div class="a-hover-color">
+                        <div class="show-more-snopt smact"></div>
+                        <i class="fal fa-tags color-blue"></i>
+                        {% for tag in tags|get_tags %}
+                            <a href="{% url 'tag' tag.tag_permalink %}" class="a-text-design">
+                                #{% spaceless %}{{ tag.tag|remove_spaces }}{% endspaceless %}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- breadcrumbs end -->
+            {% endif %}
+            <!-- section -->
+            <section class="gray-bg small-padding">
+                <div class="container">
+                    <div class=" fl-wrap">
+                        <div class="dasboard-listing-box fl-wrap">
+                            {% if popular_clubs %}
+                            <div class="dasboard-opt sl-opt fl-wrap">
+                                <a href="{% url 'ribbon' 'popular' %}" class="gradient-bg dashboard-addnew_btn show-popup-form">Popular <i class="far fa-external-link-alt"></i></a>	
+                            </div>
+                            <!-- dashboard-listings-wrap-->
+                            <div class="dashboard-listings-wrap fl-wrap">
+                                <div class="row">
+                                    {% for club in popular_clubs %}
+                                    <!-- dashboard-listings-item-->
+                                    <div class="col-md-3">
+                                        <!--  agent card item -->
+                                        <div class="listing-item" style="height: 446.375px;">
+                                            <article class="geodir-category-listing fl-wrap">
+                                                <div class="geodir-category-img fl-wrap  agent_card">
+                                                    <a href="{% url 'club-details' club.permalink %}" class="geodir-category-img_item remove-shade">
+                                                    {% if club.club_image %}
+                                                        <img src="{{ club.club_image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'images/def-cover.jpg' %}" alt="">
+                                                        <div class="no-image-card">{{club.title}}</div>
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="geodir-category-content fl-wrap">
+                                                    <div class="agent_card-title fl-wrap">
+                                                    <h4><a href="{% url 'club-details' club.permalink %}">{{club.title}}</a></h4>
+                                                        <h5><a href="{% url 'club-details' club.permalink %}">{{club.description|slice:":35"|default:'' }}{% if club.description|length > 35 %}...{% endif %}</a></h5>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!--  agent card item end -->										
+                                    </div>
+                                    <!-- dashboard-listings-item end-->
+                                    {% endfor %}												
+                                </div>
+                            </div>
+                            <!-- dashboard-listings-wrap end-->
+                            {% endif %}
+                            {% if recomended_clubs %}
+                            <div class="dasboard-opt sl-opt fl-wrap">
+                                <a href="{% url 'ribbon' 'recomended' %}" class="gradient-bg dashboard-addnew_btn show-popup-form">Recomended <i class="far fa-external-link-alt"></i></a>	
+                            </div>
+                            <!-- dashboard-listings-wrap-->
+                            <div class="dashboard-listings-wrap fl-wrap">
+                                <div class="row">
+                                    {% for club in recomended_clubs %}
+                                    <!-- dashboard-listings-item-->
+                                    <div class="col-md-3">
+                                        <!--  agent card item -->
+                                        <div class="listing-item" style="height: 446.375px;">
+                                            <article class="geodir-category-listing fl-wrap">
+                                                <div class="geodir-category-img fl-wrap  agent_card">
+                                                    <a href="{% url 'club-details' club.permalink %}" class="geodir-category-img_item remove-shade">
+                                                    {% if club.club_image %}
+                                                        <img src="{{ club.club_image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'images/def-cover.jpg' %}" alt="">
+                                                        <div class="no-image-card">{{club.title}}</div>
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="geodir-category-content fl-wrap">
+                                                    <div class="agent_card-title fl-wrap">
+                                                    <h4><a href="{% url 'club-details' club.permalink %}">{{club.title}}</a></h4>
+                                                        <h5><a href="{% url 'club-details' club.permalink %}">{{club.description|slice:":35"|default:'' }}{% if club.description|length > 35 %}...{% endif %}</a></h5>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!--  agent card item end -->										
+                                    </div>
+                                    <!-- dashboard-listings-item end-->
+                                    {% endfor %}												
+                                </div>
+                            </div>
+                            <!-- dashboard-listings-wrap end-->
+                            {% endif %}
+                            {% if new_clubs %}
+                            <div class="dasboard-opt sl-opt fl-wrap">
+                                <a href="{% url 'ribbon' 'new' %}" class="gradient-bg dashboard-addnew_btn show-popup-form">New <i class="far fa-external-link-alt"></i></a>	
+                            </div>
+                            <!-- dashboard-listings-wrap-->
+                            <div class="dashboard-listings-wrap fl-wrap">
+                                <div class="row">
+                                    {% for club in new_clubs %}
+                                    <!-- dashboard-listings-item-->
+                                    <div class="col-md-3">
+                                        <!--  agent card item -->
+                                        <div class="listing-item" style="height: 446.375px;">
+                                            <article class="geodir-category-listing fl-wrap">
+                                                <div class="geodir-category-img fl-wrap  agent_card">
+                                                    <a href="{% url 'club-details' club.permalink %}" class="geodir-category-img_item remove-shade">
+                                                    {% if club.club_image %}
+                                                        <img src="{{ club.club_image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'images/def-cover.jpg' %}" alt="">
+                                                        <div class="no-image-card">{{club.title}}</div>
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="geodir-category-content fl-wrap">
+                                                    <div class="agent_card-title fl-wrap">
+                                                    <h4><a href="{% url 'club-details' club.permalink %}">{{club.title}}</a></h4>
+                                                        <h5><a href="{% url 'club-details' club.permalink %}">{{club.description|slice:":35"|default:'' }}{% if club.description|length > 35 %}...{% endif %}</a></h5>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!--  agent card item end -->										
+                                    </div>
+                                    <!-- dashboard-listings-item end-->
+                                    {% endfor %}												
+                                </div>
+                            </div>
+                            <!-- dashboard-listings-wrap end-->
+                            {% endif %}
+                        </div>
+
+                        <a href="{% url 'all-clubs' %}" class="btn float-btn small-btn color-bg">View All Clubs</a>
+                        	
+                    </div>
+                </div>
+            </section>
+            <!-- section end-->	
+           				
+            <!-- section -->
+            <section class="color-bg small-padding">
+                <div class="container">
+                    <div class="main-facts fl-wrap">
+                        <!-- inline-facts  -->
+                        <div class="inline-facts-wrap">
+                            <div class="inline-facts">
+                                <div class="milestone-counter">
+                                    <div class="stats animaper">
+                                        <div class="num" data-content="0" data-num="{{ request.user|popular_clubs }}">0</div>
+                                    </div>
+                                </div>
+                                <h6>Popular Clubs</h6>
+                            </div>
+                        </div>
+                        <!-- inline-facts end -->
+                        <!-- inline-facts  -->
+                        <div class="inline-facts-wrap">
+                            <div class="inline-facts">
+                                <div class="milestone-counter">
+                                    <div class="stats animaper">
+                                        <div class="num" data-content="0" data-num="{{ request.user|recomended_clubs }}">0</div>
+                                    </div>
+                                </div>
+                                <h6>Recomended Clubs</h6>
+                            </div>
+                        </div>
+                        <!-- inline-facts end -->
+                        <!-- inline-facts  -->
+                        <div class="inline-facts-wrap">
+                            <div class="inline-facts">
+                                <div class="milestone-counter">
+                                    <div class="stats animaper">
+                                        <div class="num" data-content="0" data-num="{{ request.user|new_clubs }}">0</div>
+                                    </div>
+                                </div>
+                                <h6>New Clubs</h6>
+                            </div>
+                        </div>
+                        <!-- inline-facts end -->
+                        <!-- inline-facts  -->
+                        <div class="inline-facts-wrap">
+                            <div class="inline-facts">
+                                <div class="milestone-counter">
+                                    <div class="stats animaper">
+                                        <div class="num" data-content="0" data-num="{{ request.user|total_clubs }}">0</div>
+                                    </div>
+                                </div>
+                                <h6>Total Clubs</h6>
+                            </div>
+                        </div>
+                        <!-- inline-facts end -->
+                    </div>
+                </div>
+                <div class="svg-bg">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="100%"
+                        height="100%" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice">
+                        <defs>
+                            <lineargradient id="bg">
+                                <stop offset="0%" style="stop-color:rgba(255, 255, 255, 0.6)"></stop>
+                                <stop offset="50%" style="stop-color:rgba(255, 255, 255, 0.1)"></stop>
+                                <stop offset="100%" style="stop-color:rgba(255, 255, 255, 0.6)"></stop>
+                            </lineargradient>
+                            <path id="wave" stroke="url(#bg)" fill="none" d="M-363.852,502.589c0,0,236.988-41.997,505.475,0
+                                s371.981,38.998,575.971,0s293.985-39.278,505.474,5.859s493.475,48.368,716.963-4.995v560.106H-363.852V502.589z" />
+                        </defs>
+                        <g>
+                            <use xlink:href="#wave">
+                                <animatetransform attributeName="transform" attributeType="XML" type="translate" dur="10s" calcMode="spline"
+                                    values="270 230; -334 180; 270 230" keyTimes="0; .5; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+                                    repeatCount="indefinite" />
+                            </use>
+                            <use xlink:href="#wave">
+                                <animatetransform attributeName="transform" attributeType="XML" type="translate" dur="8s" calcMode="spline"
+                                    values="-270 230;243 220;-270 230" keyTimes="0; .6; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+                                    repeatCount="indefinite" />
+                            </use>
+                            <use xlink:href="#wave">
+                                <animatetransform attributeName="transform" attributeType="XML" type="translate" dur="6s" calcMode="spline"
+                                    values="0 230;-140 200;0 230" keyTimes="0; .4; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0"
+                                    repeatCount="indefinite" />
+                            </use>
+                            <use xlink:href="#wave">
+                                <animatetransform attributeName="transform" attributeType="XML" type="translate" dur="12s" calcMode="spline" values="0 240;140 200;0 230"
+                                    keyTimes="0; .4; 1" keySplines="0.42, 0, 0.58, 1.0;0.42, 0, 0.58, 1.0" repeatCount="indefinite" />
+                            </use>
+                        </g>
+                    </svg>
+                </div>
+            </section>
+            <!-- section end-->
+            
+        </div>
+        <!-- content end -->	
+       	
+        <!-- footer -->	
+        {% include 'footer.html' %}
+        <!-- footer end -->
+    </div>
+    <!-- wrapper end -->
+    <!--register form -->
+    {% include 'login.html' %}
+    <!--register form end -->
+   
+    <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>   
+    			
+</div>
+<!-- Main end -->
+    
+{% endblock content %}

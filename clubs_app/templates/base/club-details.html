@@ -1,0 +1,457 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load custom_tags %}
+{% block title %}{{club_details.title}} - PES University{% endblock title %}
+{% block description %}<meta name="description" content="{% if club_details.description %}{{ club_details.description|truncatewords:25 }}{% else %}Clubs - PES University{% endif %}" />{% endblock %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <!-- wrapper  -->	
+    <div id="wrapper">
+        <!-- content -->	
+        <div class="content">
+            <section class="hidden-section card-top" data-scrollax-parent="true" id="sec1">
+                <div class="bg-wrap bg-parallax-wrap-gradien  bganimation">
+                    <div class="bg"></div>
+                </div>
+                <div class="container">
+                    
+                    <!--  list-single-header-item-->
+                    <div class="list-single-header-item no-bg-list_sh card fl-wrap">
+                        <div class="row header-block-padding">
+                            <div class="col-sm-3 block-padding">
+                                <div class="image_zoom_in">
+                                    {% if club_details.club_image %}
+                                        <div class="box-item">
+                                            <a class="dynamic-gal gal-link popup-image" data-dynamicpath="[{'src': '{{ club_details.club_image.url }}'}]"><i
+                                                    class="fal fa-search-plus"></i></a>
+                                            <img class="club-featured-image-card" src="{{ club_details.club_image.url }}" alt="">
+                                        </div>
+                                    {% else %}
+                                        <img class="club-featured-image-card" src="{% static 'images/def-cover.jpg' %}" alt="">
+                                        <div class="no-image-card">{{club_details.title}}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-sm-9 block-padding">
+                                
+                                <div class="list-single-opt_header fl-wrap butoon-index">
+                                    <ul class="list-single-opt_header_cat">
+                                        <li><div class="cat-opt ribbon-{{club_details.ribbon|lower}}">{{club_details.ribbon}}</div></li>
+                                        {% if club_details.publish == False and request.user.is_superuser %}
+                                        <li><div class="cat-opt color-bg">Archive</div></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                                <h2>{{ club_details.title }}</h2>
+                                {% if club_details.description %}
+                                <div class="fl-wrap description-align">
+                                    <div class="description-text-style">
+                                        <i class="fal fa-comment-alt-lines"></i>
+                                        {{ club_details.description }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                                {% if club_details.founded_on %}
+                                <div class="fl-wrap">
+                                    <div class="description-text-style"> 
+                                        <i class="fal fa-calendar"></i> &nbsp;
+                                        Founded: {{ club_details.founded_on | date:"F d, Y"  }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                
+                                
+
+                                {% if club_details.socialmedia_set.all or club_details.user.username %}
+                                <div class="card-info-content_social ">
+                                    <ul>
+                                        {% if club_details.user.username %}
+                                                <li><a href="mailto:{{ club_details.user.username }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="Mail"><i class="far fa-envelope"></i></a></li>
+                                        {% endif %}
+                                        {% for social_media in club_details.socialmedia_set.all %}
+                                            {% if social_media.website %}
+                                                <li><a href="{{ social_media.website }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="Website"><i class="far fa-globe"></i></a></li>
+                                            {% endif %}
+                                            {% if social_media.facebook %}
+                                                <li><a href="{{ social_media.facebook }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="Facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                            {% endif %}
+                                            {% if social_media.x %}
+                                                <li><a href="{{ social_media.x }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="X">X</a></li>
+                                            {% endif %}
+                                            {% if social_media.instagram %}
+                                                <li><a href="{{ social_media.instagram }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="Instagram"><i class="fab fa-instagram"></i></a></li>
+                                            {% endif %}
+                                            {% if social_media.youtube %}
+                                                <li><a href="{{ social_media.youtube }}" target="_blank" class="tolt" data-microtip-position="bottom"  data-tooltip="YouTube"><i class="fab fa-youtube"></i></a></li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+
+                        <div class="list-single-header-item no-bg-list_sh fl-wrap custom-list-single-header-item">
+                            <div class="col-md-12 custom-divider"></div>
+                            <div class="list-single-header-footer fl-wrap">
+                                {% if club_details.department.all %}
+                                <div class="list-single-header-price">
+                                    <strong>
+                                        <i class="fas fa-school"></i> &nbsp;&nbsp; 
+                                        {% for department in club_details.department.all %}
+                                        {{ department.department }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %} 
+                                    </strong>
+                                </div>
+                                {% endif %}
+                                
+                                {% if club_details.campus.all %}
+                                <div class="list-single-header-date no-department" >
+                                    <strong>
+                                        <i class="fas fa-university"></i> &nbsp;&nbsp; 
+                                        {% for campus in club_details.campus.all %}
+                                            {{ campus.campus }}{% if not forloop.last %}, {% endif %}
+                                        {% endfor %}
+                                    </strong>
+                                </div>
+                                {% endif %}
+                                <div class="list-single-stats">
+                                    <ul class="no-list-style">
+                                        <li><span class="bookmark-counter"><i class="fas fa-heart color-white"></i>Liked -  <small class="num_likes_count">{{ club_details.likes }} </small></span></li>
+                                        <li><span class="viewed-counter"><i class="fas fa-eye color-white"></i>Viewed -  {{ club_details.views }} </span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <div class="breadcrumbs fw-breadcrumbs smpar fl-wrap">
+                <div class="container">
+                    {% if club_details.tag.all %}
+                    <div class="breadcrumbs-list remove-dot">
+                        {% for tag in club_details.tag.all %}
+                        <a href="{% url 'tag' tag.tag_permalink %}" class="a-text-design">
+                            <i class="fal fa-tags"></i>
+                                #{{ tag.tag|remove_spaces }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                        
+                    <!--  carousel  end--> 
+                    
+                    {% if user|check_requested_permissions:'change_club' or club_details.users.all|is_user_in:user %}
+                        <form method="post" action="">
+                            <div class="show-more-snopt smact"><i class="fa fa-cog fa-spin"></i></div>
+                            <div class="show-more-snopt-tooltip">
+                                {% if request.user.is_superuser %}
+                                <a href="{% url 'edit-club-account' club_details.permalink %}"><i class="fas fa-edit"></i> Edit Club </a>
+                                {% else %}
+                                <a href="{% url 'user-edit-club-account' club_details.permalink %}"><i class="fas fa-edit"></i> Edit </a>
+                                {% endif %}
+                                <a href="{% url 'create-staff-cordinate' club_details.permalink %}"><i class="fas fa-user"></i> Staff Cordinator </a>
+                                <a href="{% url 'create-member' club_details.permalink %}"><i class="fas fa-users"></i> Members </a>
+                                <a href="{% url 'create-award' club_details.permalink %}"><i class="fas fa-trophy"></i> Awards </a>
+                                <a href="{% url 'add-social-media' club_details.permalink %}"><i class="fas fa-mobile"></i> Social Media </a>
+                                {% if request.user.is_superuser %}
+                                    {% if club_details.publish == True %}
+                                        <a href="{% url 'move-to-archive' club_details.pk %}" onclick="return confirm('Are you sure, want to Archive '+ '{{club_details.title}}')" type='submit'>
+                                        <i class="fal fa-paper-plane"></i> Archive </a>
+                                    {% else %}
+                                        <a href="{% url 'publish-club' club_details.pk %}" onclick="return confirm('Are you sure, want to Publish '+ '{{club_details.title}}')" type='submit'>
+                                        <i class="fal fa-paper-plane"></i> Publish </a>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        </form>
+                    {% endif %}
+                    <a class="print-btn tolt" href="javascript:window.print()" data-microtip-position="bottom"  data-tooltip="Print"><i class="fas fa-print"></i></a>
+                    <button class="like-btn like" name="{{club_details.pk}}" value="like" data-like-url="{% url 'club-details' club_details.permalink %}">
+                        <span class="bookmark-counter ml-3">
+                            <svg class="Outline icon-style-custom"  xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24">
+                                <title>  {{ club_details.likes }}</title>
+                                <path
+                                    d="M17.5,1.917a6.4,6.4,0,0,0-5.5,3.3,6.4,6.4,0,0,0-5.5-3.3A6.8,6.8,0,0,0,0,8.967c0,4.547,4.786,9.513,8.8,12.88a4.974,4.974,0,0,0,6.4,0C19.214,18.48,24,13.514,24,8.967A6.8,6.8,0,0,0,17.5,1.917Zm-3.585" />
+                            </svg>
+                            <b class="color-blue">&nbsp;Like</b>
+                        </span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- col-list-wrap -->
+            <div class="gray-bg small-padding fl-wrap">
+                <div class="container">
+                    <div class="row">
+                        {% if club_details.member_set.all or club_details.award_set.all or club_details.staffcordinate_set.all  %}
+                        <div class="col-md-8">
+                        {% else %}
+                        <div class="col-md-12">
+                        {% endif %}
+                            <div class="post-article post-container fl-wrap">
+                                <!-- article> -->
+                                <article class="fl-wrap">
+                                    <div class="list-single-main-item fl-wrap block_box">
+                                        <h2 class="post-opt-title">About this Club</h2>
+                                        <span class="fw-separator fl-wrap"></span>
+                                        <div class="about-style">
+                                            {% if club_details.about|safe %}
+                                            {{club_details.about|safe}}
+                                            {% else %}
+                                            No About Content Availble for: {{ club_details.title }}
+                                            {% endif %}</div>
+                                        <span class="fw-separator fl-wrap"></span>
+                                        <div class="post-opt post-opt-custom">
+                                            <ul class="no-list-style">
+                                                
+                                                {% if club_details.tag.all %}
+                                                <li><i class="fal fa-tags"></i>  <span class="a-hover-color">
+                                                    {% for tag in club_details.tag.all %}
+                                                    <a href="{% url 'tag' tag.tag_permalink %}" class="a-text-design">
+                                                            #{{ tag.tag|remove_spaces }}</a>
+                                                    {% endfor %}
+                                                    </span></li>
+                                                {% endif %}
+                                                {% if club_details.founded_on %}
+                                                <li><i class="fal fa-calendar"></i> <span> {{ club_details.founded_on | date:"F d, Y" }}</span></li>
+                                                {% endif %}
+                                                <li><i class="fal fa-eye"></i> <span> Viewed - {{club_details.views}}</span></li>
+                                                <li><i class="fal fa-heart"></i> <span> Liked - <small class="num_likes_count">{{ club_details.likes }}</small></span></li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </article>
+                                <!-- article end -->
+                            </div>
+                            <!-- sidebar -->
+                            <!--content-nav_holder-->
+                            <div class="content-nav_holder fl-wrap color-bg custom-margin-bottom-30">
+                                <div class="content-nav">
+                                    <ul>
+                                        <li>
+                                            {%if previous_club.permalink %}
+                                            <a href="{% url 'club-details' previous_club.permalink %}" class="ln"><i
+                                                    class="fal fa-long-arrow-left"></i><span>Prev <strong>- Club
+                                                    </strong></span></a>
+                                            {% endif %}
+                                            {% if previous_club.club_image %}
+                                            <div class="content-nav-media">
+                                                <div class="bg" data-bg="{{previous_club.club_image.url}}"></div>
+                                            </div>
+                                            {% endif %}
+                                        </li>
+                                        <li>
+                                            {%if next_club.permalink %}
+                                            <a href="{% url 'club-details' next_club.permalink %}" class="rn"><span>Next <strong>- Club
+                                                    </strong></span> <i class="fal fa-long-arrow-right"></i></a>
+                                            <div class="content-nav-media">
+                                                {% if next_club.club_image %}
+                                                <div class="bg" data-bg="{{next_club.club_image.url}}"></div>
+                                                {% endif %}
+                                            </div>
+                                            {% endif %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!--content-nav_holder end -->
+                        </div>
+                        
+                        {% if club_details.member_set.all or club_details.award_set.all or club_details.staffcordinate_set.all  %}
+                        <div class="col-md-4">
+                            {% if club_details.member_set.all %}
+                            <!-- <div class="number-list-box-widget dbt-mm fl-wrap"><i class="fas fa-users"></i>&nbsp; Members</div> -->
+                            <div class="dashboard-list-box card-bottom-space fl-wrap">
+                                <!-- dashboard-list end-->
+                                <a href="{% url 'member-list' club_details.permalink %}">
+                                    <div class="dashboard-list fl-wrap">
+                                        <div class="fl-wrap">
+                                            <div class="number-list-text"> Members</div>
+                                            <span class="fw-separator fl-wrap"></span>
+                                        </div>
+                                        <span class="number-list-arrow color-bg"><i class="fal fa-arrow-right"></i></span>
+                                        <div class="dashboard-message">
+                                            <ul class="users">
+                                                {% for member in club_details.member_set.all|list_of_image %}
+                                                <li>
+                                                    {% if member.member_pic %}
+                                                    <img src="{{ member.member_pic.url }}" alt="">
+                                                    {% else %}
+                                                    <img src="{% static 'images/member.jpg' %}" alt="">
+                                                    {% endif %}
+                                                </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- dashboard-list end-->
+                            </div>
+                            {% endif %}
+                            {% if club_details.award_set.all %}
+                            <!-- <div class="number-list-box-widget dbt-mm fl-wrap"><i class="fas fa-trophy"></i>&nbsp; Awards</div> -->
+                            <div class="dashboard-list-box card-bottom-space fl-wrap">
+                                <!-- dashboard-list end-->
+                                <a href="{% url 'award-list' club_details.permalink %}">
+                                    <div class="dashboard-list fl-wrap">
+                                        <div class="fl-wrap">
+                                            <div class="number-list-text"> Awards</div>
+                                            <span class="fw-separator fl-wrap"></span>
+                                        </div>
+                                        <div class="dashboard-message">
+                                            <span class="number-list-arrow color-bg"><i class="fal fa-arrow-right"></i></span>
+                                            <ul class="users">
+                                                {% for award in club_details.award_set.all|list_of_image %}
+                                                <li><img src="{% static 'images/award.jpg' %}" alt=""></li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                                <!-- dashboard-list end-->
+                            </div>
+                            {% endif %}
+                               
+                            {% if club_details.staffcordinate_set.all %}
+                            
+
+                            <div class="box-widget-title fl-wrap box-widget-title-color color-bg no-top-margin"><i class="fas fa-user-friends"></i> Staff Cordinator</div>
+                            <div class="post-container card-bottom-space fl-wrap">
+                                <!-- article> -->
+                                <article class="post-article fl-wrap">
+                                    <div class=" carousel-wrap fl-wrap">
+                                        <div class="single-slider staff-co fl-wrap carousel lightgallery">
+                                            {% for staffcordinate in club_details.staffcordinate_set.all %}
+                                            <div class="box-widget bwt-first fl-wrap">
+                                                <div class="box-widget-content guest-box-widget fl-wrap">
+                                                    <!--widget-posts-->
+                                                    <div class="widget-posts  fl-wrap">
+                                                        <ul class="no-list-style staff-co-img-card">
+                                                            <li>
+                                                                <div class="widget-posts-img">
+                                                                    {% if staffcordinate.staff_pic_url %}
+                                                                    <img src="{{ staffcordinate.staff_pic_url }}" alt="">
+                                                                    {% else %}
+                                                                    <img src="{% static 'images/admin.jpg' %}" alt="">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="widget-posts-descr">
+                                                                    <h4><span><a href="{{staffcordinate.staff_url}}" target="_blank">{{ staffcordinate.staff_name|upper }}</a></span></h4>
+                                                                    {% if staffcordinate.staff_designation %}
+                                                                    <div class="geodir-category-location fl-wrap"><a href="{{staffcordinate.staff_url}}" target="_blank"> {{ staffcordinate.staff_designation }}</a></div>
+                                                                    {% endif %}
+                                                                    {% if staffcordinate.staff_phone %}
+                                                                    <div class="widget-posts-descr-price"><span><i class="fa fa-phone"></i> </span> <a href="tel:{{staffcordinate.staff_phone}}" class="color-blue">{{staffcordinate.staff_phone}}</a></div>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </li>
+                                                            {% if staffcordinate.staff_url %}
+                                                            <div class="staff-co-button fl-wrap">
+                                                                <a href="{{staffcordinate.staff_url}}" class="btn float-btn color-bg small-btn" target="_blank">View Profile</a>
+                                                            </div>
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                    <!-- widget-posts end-->
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        {% if club_details.staffcordinate_set.all|length > 1 %}
+                                        <div class="swiper-button-prev ssw-btn"><i class="fas fa-caret-left"></i></div>
+                                        <div class="swiper-button-next ssw-btn"><i class="fas fa-caret-right"></i></div>
+                                        {% endif %}
+                                        
+                                    </div>
+                                </article>
+    
+                                
+                                <!-- article end -->
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                        
+                    </div>
+                    <div class="fl-wrap limit-box"></div>
+                    {% if similar_clubs %}
+                    <div class="listing-carousel-wrapper carousel-wrap fl-wrap" id="sec5">
+                        <div class="list-single-main-item-title">
+                            <h3>Recently Added Clubs</h3>
+                        </div>
+                        <div class="listing-carousel carousel ">
+                            {% for club in similar_clubs %}
+                            <!-- slick-slide-item -->
+                            <div class="slick-slide-item">
+                                <!-- listing-item -->
+                                <div class="listing-item">
+                                    <article class="geodir-category-listing fl-wrap">
+                                        <div class="geodir-category-img fl-wrap">
+                                            <a href="{% url 'club-details' club.permalink %}" class="geodir-category-img_item">
+                                                {% if club.club_image %}
+                                                    <img src="{{ club.club_image.url }}" alt="">
+                                                {% else %}
+                                                    <img src="{% static 'images/def-cover.jpg' %}" alt="">
+                                                    <div class="no-image-card">{{club.title}}</div>
+                                                {% endif %}
+                                                <div class="custom-overlay"></div>
+                                            </a>
+                                            {% if club.ribbon %}
+                                            <div class="geodir-category-listing_media-list">
+                                                <span class="cat-opt ribbon-{{club.ribbon|lower}}">{{ club.ribbon }}</span>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="geodir-category-content fl-wrap">
+                                            <h3 class="title-sin_item"><a href="{% url 'club-details' club.pk %}">{{ club.title }}</a></h3>
+                                            <h4>{% if club.description %}{{ club.description|slice:":50"|default:'' }}{% if club.description|length > 50 %}...{% endif %}{% endif %}</h4>
+                                            {% if club.founded_on %}
+                                            <div class="geodir-category-footer fl-wrap">
+                                                <div class="club-date-text ">{{ club.founded_on | date:"F d, Y"  }}</div>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </article>
+                                </div>
+                                <!-- listing-item end-->							
+                            </div>
+                            <!-- slick-slide-item end-->
+                            {% endfor %}
+                                                                
+                                                        
+                        </div>
+                        <div class="swiper-button-prev lc-wbtn lc-wbtn_prev"><i class="far fa-angle-left"></i></div>
+                        <div class="swiper-button-next lc-wbtn lc-wbtn_next"><i class="far fa-angle-right"></i></div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- content end -->	
+        
+        <!-- footer -->	
+        {% include 'footer.html' %}
+        <!-- footer end -->
+    </div>
+    <!-- wrapper end -->
+    <!--register form -->
+    {% include 'login.html' %}
+    <!--register form end -->
+    <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>  
+</div>
+<!-- Main end -->         
+{% endblock content %}
+	
+               
+        

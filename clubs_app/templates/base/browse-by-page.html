@@ -1,0 +1,177 @@
+{% include 'main.html' %}
+{% load static %}
+
+{% load custom_tags %}
+{% block title %}{{titles_name|upper}}{% endblock title %}
+{% block description %}<meta name="description" content="clubs - PES University" />{% endblock %}
+{% block content %}
+
+            	
+
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->	
+    <!-- wrapper  -->	
+    <div id="wrapper">
+        <!-- content -->	
+        <div class="content">
+
+            <!--  section  -->
+        {% if all_pages.number == 1 %}
+        <section class="hidden-section single-par2  " data-scrollax-parent="true" style="padding: 90px 0 90px;">
+            <div class="bg-wrap bg-parallax-wrap-gradien  bganimation">
+                <div class="bg par-elem "  data-bg="" data-scrollax=""></div>
+            </div>
+            <div class="container">
+                <div class="section-title center-align big-title">
+                    <h2><span><i class="{{ title_icon }}"> </i> </span></h2>
+                    <h2 style="font-size: 24px;"><span>{{titles_name|upper}}</span></h2>
+                    <h4></h4>
+                </div>
+                <div class="scroll-down-wrap">
+                    <div class="mousey">
+                        <div class="scroller"></div>
+                    </div>
+                    <span>Scroll Down To Discover</span>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+        <!--  section  end-->
+            {% if tags|get_tags %}
+            <!-- breadcrumbs-->
+            <div class="breadcrumbs fw-breadcrumbs smpar fl-wrap ">
+                <div class="container padding-top">
+                    <div class="a-hover-color">
+                        <div class="show-more-snopt smact"></div>
+                        <i class="fal fa-tags color-blue"></i>
+                        {% for tag in tags|get_tags %}
+                            <a href="{% url 'tag' tag.tag_permalink %}" class="a-text-design">
+                                #{% spaceless %}{{ tag.tag|remove_spaces }}{% endspaceless %}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <!-- breadcrumbs end -->
+            {% endif %}
+            {% if all_pages.object_list|length >= 1 %}
+            <!-- section -->
+            <section class="gray-bg small-padding">
+                <div class="container">
+                    <div class="dasboard-wrapper fl-wrap">
+                        <div class="dasboard-listing-box fl-wrap">
+                            <!-- dashboard-listings-wrap-->
+                            <div class="dashboard-listings-wrap fl-wrap">
+                                <div class="row">
+                                    {% for club in all_pages.object_list %}
+                                    <!-- dashboard-listings-item-->
+                                    <div class="col-md-3">
+                                        <!--  agent card item -->
+                                        <div class="listing-item" style="height: 446.375px;">
+                                            <article class="geodir-category-listing fl-wrap">
+                                                <div class="geodir-category-img fl-wrap  agent_card">
+                                                    <a href="{% url 'club-details' club.permalink %}" class="geodir-category-img_item remove-shade">
+                                                    {% if club.club_image %}
+                                                        <img src="{{ club.club_image.url }}" alt="">
+                                                    {% else %}
+                                                        <img src="{% static 'images/def-cover.jpg' %}" alt="">
+                                                        <div class="no-image-card">{{club.title}}</div>
+                                                    {% endif %}
+                                                    </a>
+                                                </div>
+                                                <div class="geodir-category-content fl-wrap">
+                                                    <div class="agent_card-title fl-wrap">
+                                                    <h4><a href="{% url 'club-details' club.permalink %}">{{club.title}}</a></h4>
+                                                        <h5><a href="{% url 'club-details' club.permalink %}">{{club.description|slice:":35"|default:'' }}{% if club.description|length > 35 %}...{% endif %}</a></h5>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!--  agent card item end -->										
+                                    </div>
+                                    <!-- dashboard-listings-item end-->
+                                    {% endfor %}												
+                                </div>
+                            </div>
+                            <!-- dashboard-listings-wrap end-->
+                        </div>
+                        
+                        <div>
+                            <!-- pagination-->
+                            <pagination>
+                                <div class="pagination custom-pagination">
+                                    {%if all_pages.has_previous %}
+                                        <a href="?page={{all_pages.previous_page_number}}" class="prevposts-link"><i class="fa fa-caret-left"></i></a>
+                                    {% endif %}
+        
+                                    {% for n in all_pages.paginator.page_range %}
+                                    {% if all_pages.number == n %}
+                                            <li class="paginator-li "><span class="page-numbers "><a class= "current-page">{{ n }}</a></span></li>
+                                    {% elif n > all_pages.number|add:'-3' and n < all_pages.number|add:'3' %}
+                                        <li class="paginator-li"><a class="paginator-li" href="?page={{ n }}">{{ n }}</a></li>
+                                        <!-- <li class="paginator-li"><a href="?page={{ i }}">{{ i }}</a></li> -->
+                                    {% endif %}
+                                    {% endfor %}
+                                    
+                                    {% if all_pages.has_next %}
+                                    ....
+                                    <li class="paginator-li">
+                                        <a class="paginator-li" href="?page={{ all_pages.paginator.num_pages }}" aria-label="Next">
+                                        <span aria-hidden="true">{{ all_pages.paginator.num_pages }}</span>
+                                        <span class="sr-only">end</span>
+                                        </a>
+                                    </li>
+                                    {% endif %} 
+        
+                                    {%if all_pages.has_next %}
+                                        <a href="?page={{all_pages.next_page_number}}" class="nextposts-link"><i class="fa fa-caret-right"></i></a>
+                                    {% endif %} 
+                                </div>
+                            </pagination>
+                            <!-- pagination end-->
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
+            <!-- section end-->	
+            {% else %}
+            <section class="gray-bg small-padding">
+                <div class="container">
+                    <!--about-wrap -->
+                    <div class="about-wrap">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="about-title fl-wrap">
+                                    <h2>No Content Availble for:  <span>{{titles_name}}</span></h2>
+                                    <h4>No clubs in this category. If you have any information, write to media@pes.edu.</h4>
+                                </div>
+                                
+                                <a href="{% url 'index' %}" class="btn small-btn float-btn color-bg">Back to Home</a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- about-wrap end  -->							
+                </div>
+            </section>
+            {% endif %}
+        </div>
+        <!-- content end -->	
+       	
+        <!-- footer -->	
+        {% include 'footer.html' %}
+        <!-- footer end -->
+    </div>
+    <!-- wrapper end -->
+    <!--register form -->
+    {% include 'login.html' %}
+    <!--register form end -->
+   
+    <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>   
+    			
+</div>
+<!-- Main end -->
+    
+{% endblock content %}

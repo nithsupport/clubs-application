@@ -1,0 +1,102 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load custom_tags %}
+{% block title %}{{club_details.title}} - Awards{% endblock title %}
+{% block description %}<meta name="description" content="{% if club_details.description %}{{ club_details.description|truncatewords:25 }}{% else %}Clubs - PES University{% endif %}" />{% endblock %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <!-- wrapper  -->	
+    <div id="wrapper">
+        <!-- content -->	
+        <div class="content">
+            <!-- section -->
+            <section class="gray-bg small-padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- list-main-wrap-title-->
+                            <a href="{% url 'club-details' club_details.permalink %}">
+                                <div class="list-main-wrap-title">
+                                    <h2>{{ club_details.title|upper }}: <strong>{{ club_details.award_set.all|length }}</strong></h2>
+                                </div>
+                            </a>
+                            <!-- list-main-wrap-title end-->  
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="row">
+                        <!-- listing-item-wrap-->
+                        <div class="listing-item-container one-column-grid-wrap  box-list_ic agency-list fl-wrap">
+                            {% for award in club_details.award_set.all %}
+                            <div class="col-md-6">
+                                <!--  agecy card item -->
+                                <div class="listing-item">
+                                    <article class="geodir-category-listing fl-wrap">
+                                        <div class="geodir-category-img fl-wrap">
+                                            <a href="#" class="geodir-category-img_item">
+                                                {% if award.award_image %}
+                                                <img src="{{ award.award_image.url }}" alt="">
+                                                {% else %}
+                                                <img src="{% static '/images/award.jpg' %}" alt="">
+                                                {% endif %}
+                                            </a>
+                                        </div>
+                                        <div class="geodir-category-content fl-wrap">
+                                            {% if award.external_link %}
+                                            <div class="card-verified "><a href="{{award.external_link}}"><i class="fal fa-external-link-alt" style="color: #0095FF"></i></a></div>
+                                            {% endif %}
+                                            <div class="agent_card-title fl-wrap">
+                                                <h4><a>{{ award.award_name}}</a></h4>
+                                                {% if award.compitation_name %}
+                                                <div class="geodir-category-location fl-wrap">
+                                                    <a>{{award.compitation_name}}</a>
+                                                </div>
+                                                {% endif %}
+                                                {% if award.organizer %}
+                                                <div class="geodir-category-location fl-wrap">
+                                                    <a>{{award.organizer}}</a>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                            {% if award.year %}
+                                            <div class="small-facts fl-wrap">
+                                                <ul>
+                                                    <li><i class="fal fa-calendar"></i> <span>Won: <strong>{{award.year }}</strong></span></li>
+                                                </ul>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </article>
+                                </div>
+                                <!--  agecy card item end-->							
+                            </div>
+                            {% endfor %}
+                            <!-- listing-item-wrap end-->						
+                        </div>
+                        <!-- col-md 8 end -->					
+                    </div>
+
+                </div>
+            </section>
+            <!-- section end-->	
+        </div>
+        <!-- content end -->	
+        
+        <!-- footer -->	
+        {% include 'footer.html' %}
+        <!-- footer end -->
+    </div>
+    <!-- wrapper end -->
+    <!--register form -->
+    {% include 'login.html' %}
+    <!--register form end -->
+    <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>
+</div>
+<!-- Main end -->         
+{% endblock content %}

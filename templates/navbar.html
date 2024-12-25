@@ -1,0 +1,98 @@
+{% load static %}
+{% load custom_tags %}
+
+<!-- header -->
+<header class="main-header">
+    <!--  logo  -->
+    <div class="logo-holder"><a href="{% url 'index' %}"><img src="{% static 'images/logo.png' %}" alt="logo" style="height: 40px;"></a></div>
+    <!-- logo end  -->
+    <!-- nav-button-wrap--> 
+    <div class="nav-button-wrap color-bg nvminit">
+        <div class="nav-button">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+    <!-- nav-button-wrap end-->	
+    <!-- header-search button  -->
+    <div class="header-search-button">
+        <i class="fal fa-search"></i>
+        <span>Search...</span>
+    </div>
+    <!-- header-search button end  -->
+    {% if request.user.is_authenticated %}
+    <!--  add new  btn -->
+    <div class="add-list_wrap">
+        <a href="{% url 'dashboard' %}" class="add-list color-bg"><i class="fal fa-plus"></i> <span>Dashboard</span></a>
+    </div>
+    {% endif %}
+    <!--  add new  btn end -->
+    <!--  login btn -->
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'logout-page' %}"><div class="show-reg-form "><i class="fas fa-user"></i><span>Sign Out</span></div></a>
+    {% else %}
+        <!-- <div class="show-reg-form modal-open"><i class="fas fa-user"></i><span>Sign In</span></div> -->
+    {% endif %}
+    <!--  login btn  end -->
+    
+    <!--  navigation --> 
+    <div class="nav-holder main-menu">
+        <nav>
+            <ul class="no-list-style">
+                <li>
+                    <a href="{% url 'index' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'all-clubs' %}">All Clubs</a>
+                </li>
+                <li>
+                    <a href="#">Browse by Campus <i class="fa fa-caret-down"></i></a>
+                    <!--second level -->
+                    <ul>
+                        {% for campus in campus|get_campus %}
+                            <li><a href="{% url 'campus' campus.campus_permalink %}">{{campus.campus_navbar}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <!--second level end-->
+                </li>
+                <li>
+                    <a href="#">Browse by Department<i class="fa fa-caret-down"></i></a>
+                    <!--second level -->   
+                    <ul>
+                        {% for department in departments|get_departments %}
+                            <li><a href="{% url 'department' department.department_permalink %}">{{department.department_navbar}}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <!--second level end-->
+                </li>
+                <li>
+                    <a href="#">Browse by Tags <i class="fa fa-caret-down"></i></a>
+                        <!--second level -->   
+                        <ul>
+                            {% for tag in tags|get_tags %}
+                                <li><a href="{% url 'tag' tag.tag_permalink %}">{{tag.tag_navbar}}</a></li>
+                            {% endfor %}
+                        </ul>
+                        <!--second level end-->                               
+                </li>
+                <li>
+                    <a href="https://www.pesuacademy.com/Academy/" target="_blank">Forum</a>
+                </li>
+                
+            </ul>
+        </nav>
+    </div>
+    <!-- navigation  end -->  
+    <!-- header-search-wrapper -->
+    <div class="header-search-wrapper novis_search">
+
+        <div class="custom-form">
+            <form method="get" name="registerform" action="{% url 'all-clubs' %}">
+                <label>Clubs</label>
+                <input type="text" placeholder="Type your text here.." value="" name="search" class="search" />
+                <button type="submit" class="btn float-btn color-bg"><i class="fal fa-search"></i> Search</button>
+            </form>
+        </div>
+    </div>
+    <!-- header-search-wrapper end  -->
+</header>
+<!-- header end  -->

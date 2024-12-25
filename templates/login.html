@@ -1,0 +1,112 @@
+{% load static %}
+
+<!--register form -->
+<div class="main-register-wrap modal">
+    <div class="reg-overlay"></div>
+    <div class="main-register-holder tabs-act">
+        <div class="main-register-wrapper modal_main fl-wrap">
+            <div class="main-register-header color-bg">
+                <div class="main-register-logo fl-wrap logo">
+                    <img src="{% static 'images/white-logo.png' %}" alt="">
+                </div>
+                <div class="main-register-bg">
+                    <div class="mrb_pin"></div>
+                    <div class="mrb_pin mrb_pin2"></div>
+                </div>
+                <div class="mrb_dec"></div>
+                <div class="mrb_dec mrb_dec2"></div>
+            </div>
+            <div class="main-register">
+                {% if messages %}
+                    <div class="notification success-notif  fl-wrap">
+                    {% for message in messages %}
+                        <p style="font-size: 13px;">{{ message }}</p>
+                    {% endfor %}
+                    <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
+                </div>
+                {% endif %}
+
+                <div class="close-reg"><i class="fal fa-times"></i></div>
+                <ul class="tabs-menu fl-wrap no-list-style">
+                    <li class="current"><a href="#tab-1"><i class="fal fa-sign-in-alt"></i> Login</a></li>
+                    {% if request.user.is_superuser %}
+                    <li><a href="#tab-2"><i class="fal fa-user-plus"></i> Register</a></li>
+                    {% endif %}
+                </ul>
+                <!--tabs -->                       
+                <div class="tabs-container">
+                    <div class="tab">
+                        <!--tab -->
+                        <div id="tab-1" class="tab-content first-tab">
+                            <div class="custom-form">
+                                <form action="{% url 'login-page' %}" method="post"  name="registerform">
+                                    {% csrf_token %}
+                                    <label>Username or Email Address  * <span class="dec-icon"><i class="fal fa-user"></i></span></label>
+                                    <input name="username" type="text" required>
+                                    <div class="pass-input-wrap fl-wrap">
+                                        <label >Password  * <span class="dec-icon"><i class="fal fa-key"></i></span></label>
+                                        <input name="password" type="password" required>
+                                        <span class="eye"><i class="fal fa-eye"></i> </span>
+                                    </div>
+                                    <!-- <div class="lost_password">
+                                        <a href="#">Forgot Password?</a>
+                                    </div>
+                                    <div class="filter-tags">
+                                        <input id="check-a3" type="checkbox" name="check">
+                                        <label for="check-a3">Remember me</label>
+                                    </div> -->
+                                    <div class="clearfix"></div>
+                                    <button type="submit"  class="log_btn color-bg"> LogIn </button>
+                                </form>
+                            </div>
+                        </div>
+                        <!--tab end -->
+                        {% if request.user.is_superuser %}
+                        <!--tab -->
+                        <div class="tab">
+                            <div id="tab-2" class="tab-content">
+                                <div class="custom-form">
+                                    <form method="post"   name="registerform" class="main-register-form" id="main-register-form2">
+                                        <label >Full Name  * <span class="dec-icon"><i class="fal fa-user"></i></span></label>
+                                        <input name="name" type="text"    onClick="this.select()" value="">
+                                        <label>Email Address  * <span class="dec-icon"><i class="fal fa-envelope"></i></span></label>
+                                        <input name="email" type="text"    onClick="this.select()" value="">
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label >Password  * <span class="dec-icon"><i class="fal fa-key"></i></span></label>
+                                            <input name="password" type="password"  autocomplete="off"  onClick="this.select()" value="" >
+                                            <span class="eye"><i class="fal fa-eye"></i> </span>
+                                        </div>
+                                        <div class="filter-tags ft-list">
+                                            <input id="check-a2" type="checkbox" name="check">
+                                            <label for="check-a2">I agree to the <a href="#">Privacy Policy</a> and <a href="#">Terms and Conditions</a></label>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <button type="submit"     class="log_btn color-bg"> Register </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--tab end -->
+                        {% endif %}
+                    </div>
+                    <!--tabs end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--register form end -->
+<!--secondary-nav -->
+<div class="secondary-nav">
+    <div class="progress-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg"
+            viewBox="-1 -1 34 34">
+            <circle cx="16" cy="16" r="15.9155"
+                class="progress-bar__background" />
+            <circle cx="16" cy="16" r="15.9155"
+                class="progress-bar__progress 
+                js-progress-bar" />
+        </svg>
+    </div>
+</div>
+<!--secondary-nav end -->

@@ -1,0 +1,331 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load custom_tags %}
+{% block title %}{% if form.instance.pk %}Edit{% else %}Create{% endif %} Club - PES University{% endblock title %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <!-- wrapper  -->
+    <div id="wrapper">
+        <!-- dashbard-menu-wrap -->
+        <div class="dashbard-menu-overlay"></div>
+        <!-- sidebar menu start -->
+        {% if request.resolver_match.url_name == 'create-account' %}
+            {% include 'sidebar.html' %}
+        {% elif form.instance.pk %}
+            {% include 'club-sidebar.html' %}
+        {% elif form %}
+            {% include 'club-sidebar.html' %}
+        {% endif %}
+        <!-- sidebar menu end -->
+        <!-- dashbard-menu-wrap end  -->
+        <!-- content -->
+        <div class="dashboard-content">
+            <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+            <div class="container dasboard-container">
+                <!-- dashboard-title -->
+                <div class="dashboard-title fl-wrap">
+                    <div class="dashboard-title-item"><span>{% if form.instance.pk %}Edit{% else %}Create{% endif %} Club</span></div>
+                    <div class="dashbard-menu-header">
+                        <div class="dashbard-menu-avatar fl-wrap">
+                            {% if club_detail %}
+                            <a href="{% url 'club-details' club_detail.permalink %}">
+                                <img src="{% static 'images/admin.jpg' %}" alt="">
+                                <h4><span>{{ club_detail.title }}</span></h4>
+                            </a>
+                            {% else %}
+                            <a href="#">
+                                <img src="{% static 'images/admin.jpg' %}" alt="">
+                                <h4><span>{{ user.name | capfirst}}</span></h4>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <a href="{% url 'logout-page' %}" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                    </div>
+                </div>
+                <!-- dashboard-title end -->
+                {% if messages %}
+                <div class="notification success-notif  fl-wrap">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                        <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
+                    </div>
+                {% endif %}
+                <!-- dasboard-wrapper-->
+                <div class="dasboard-wrapper fl-wrap no-pag ">
+                    {% if request.user.is_superuser %}
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="dasboard-widget-title fl-wrap">
+                                    <h5><i class="fa fa-image"></i>Club Poster</h5>
+                                </div>
+                                <div class="dasboard-widget-box nopad-dash-widget-box fl-wrap">
+                                    <div class="edit-profile-photo">
+                                        {% if form.instance.club_image %}
+                                            <img src="{{ form.instance.club_image.url }}" class="respimg" alt="">
+                                        {% else %}
+                                            <img src="{% static 'images/admin.jpg' %}" class="respimg" alt="">
+                                        {% endif %}
+                                        <div class="change-photo-btn">
+                                            <div class="photoUpload">
+                                                <span>Upload New Photo <i class="fa fa-upload"></i></span>
+                                                {{form.club_image}}
+                                                {% if form.club_image.errors %}
+                                                    <div class="text-danger">{{ form.club_image.errors|join:", " }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="bg-wrap bg-parallax-wrap-gradien">
+                                        <div class="bg color-bg" data-bg=""></div>
+                                    </div>
+                                </div>
+                                <div class="dasboard-widget-title fl-wrap">
+                                    <h5><i class="fas fa-info"></i>Club Info</h5>
+                                </div>
+                                <div class="dasboard-widget-box fl-wrap">
+                                    <div class="custom-form">
+                                        
+                                        <label class="heading-font">Title *<span class="dec-icon"><i class="far fa-heading"></i></span></label>
+                                        {{form.title}}
+                                        {% if form.title.errors %}
+                                            <div class="text-danger">{{ form.title.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label class="heading-font">Permalink *<span class="dec-icon"><i class="far fa-external-link-alt"></i></span></label>
+                                        {{form.permalink}}
+                                        {% if form.permalink.errors %}
+                                            <div class="text-danger">{{ form.permalink.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label class="heading-font">Description <span class="dec-icon"><i class="fal fa-comment-alt-lines"></i></span></label>
+                                        {{form.description}}
+                                        {% if form.description.errors %}
+                                            <div class="text-danger">{{ form.description.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>Email <span class="dec-icon"><i class="far fa-envelope"></i></span></label>
+                                            {{ form.email }}
+                                            {% if form.email.errors %}
+                                                <div class="text-danger">{{ form.email.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>About </label>
+                                            {{ form.about }}
+                                            {% if form.about.errors %}
+                                                <div class="text-danger">{{ form.about.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+                                        
+
+                                        <label>Founded on *<span class="dec-icon"><i class="fal fa-calendar"></i></span></label>
+                                        {{ form.founded_on }}
+                                        {% if form.founded_on.errors %}
+                                            <div class="text-danger">{{ form.founded_on.errors|join:", " }}</div>
+                                        {% endif %}
+                                        <div class="row">
+                                            <div class="col-sm-7">
+                                                <label class="heading-font">Ribbon </label>
+                                                    <div class="custom-form">
+                                                        <div class="clearfix"></div>
+                                                        <div class=" add-list-tags fl-wrap">
+                                                            <!-- Checkboxes -->
+                                                            <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                                                {{form.ribbon}}
+                                                            </ul>
+                                                            <!-- Checkboxes end -->												
+                                                        </div>
+                                                    </div>
+                                                    {% if form.ribbon.errors %}
+                                                        <div class="text-danger">{{ form.ribbon.errors|join:", " }}</div>
+                                                    {% endif %}
+
+                                                {% comment %} <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                                    <li>
+                                                        {% for value, label in form.ribbon.field.choices %}
+                                                        {{form.instance.ribbon}}
+                                                            {% if value == form.initial.ribbon or value == form.instance.ribbon %}
+                                                                <input type="radio" name="{{ form.ribbon.name }}" value="{{ value }}" checked>
+                                                            {% else %}
+                                                                <input type="radio" name="{{ form.ribbon.name }}" value="{{ value }}">
+                                                            {% endif %}
+                                                            <label class="radio inline">{{ label }}</label>
+                                                        {% endfor %}
+                                                        
+                                                        {% if form.ribbon.errors %}
+                                                            <div class="text-danger">{{ form.ribbon.errors|join:", " }}</div>
+                                                        {% endif %}
+                                                    </li>
+                                                </ul> {% endcomment %}
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <label>Background Color </label>
+                                                {{ form.background_color }}
+                                                {% if form.background_color.errors %}
+                                                    <div class="text-danger">{{ form.background_color.errors|join:", " }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+
+                                        
+
+                                        
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                {% if request.resolver_match.url_name == 'create-account' %}
+                                <div class="dasboard-widget-title dbt-mm fl-wrap">
+                                    <h5><i class="fas fa-key"></i>Username and Password</h5>
+                                </div>
+                                <div class="dasboard-widget-box fl-wrap">
+                                    <div class="custom-form">
+        
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>Username * <span class="dec-icon"><i class="far fa-envelope"></i></span></label>
+                                            {{ user_form.username }}
+                                            {% if user_form.username.errors %}
+                                                <div class="text-danger">{{ user_form.username.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+        
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>Password *<span class="dec-icon"><i class="far fa-lock-alt"></i></span></label>
+                                            {{user_form.password1}}
+                                            <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
+                                            {% if user_form.password1.errors %}
+                                                <div class="text-danger">{{ user_form.password1.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+        
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>Confirm Password *<span class="dec-icon"><i class="far fa-shield-check"></i> </span></label>
+                                            {{user_form.password2}}
+                                            <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
+                                            {% if user_form.password2.errors %}
+                                                <div class="text-danger">{{ user_form.password2.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+        
+                                    </div>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="dasboard-widget-title {% if request.resolver_match.url_name == 'create-account' %}dwb-mar{% else %}dbt-mm{% endif %} fl-wrap">
+                                    <h5><i class="fal fa-university"></i>Campus</h5>
+                                </div>
+                                <div class="dasboard-widget-box dbt-mm  fl-wrap">
+                                    <div class="custom-form">
+                                        <div class="clearfix"></div>
+                                        <div class=" add-list-tags fl-wrap">
+                                            <!-- Checkboxes -->
+                                            <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                                {{form.campus}}
+                                            </ul>
+                                            <!-- Checkboxes end -->												
+                                        </div>
+                                    </div>
+                                    {% if form.campus.errors %}
+                                        <div class="text-danger">{{ form.campus.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+
+                                
+                                <div class="dasboard-widget-title dwb-mar fl-wrap">
+                                    <h5><i class="fa fa-sitemap"></i>Department</h5>
+                                </div>
+                                <div class="dasboard-widget-box  fl-wrap">
+                                    <div class="custom-form">
+                                        <div class="clearfix"></div>
+                                        <div class=" add-list-tags fl-wrap">
+                                            <!-- Checkboxes -->
+                                            <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                                {{form.department}}
+                                            </ul>
+                                            <!-- Checkboxes end -->												
+                                        </div>
+                                    </div>
+                                    {% if form.department.errors %}
+                                        <div class="text-danger">{{ form.department.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="dasboard-widget-title dwb-mar fl-wrap">
+                                    <h5><i class="fa fa-tags"></i>Tags</h5>
+                                </div>
+                                <div class="dasboard-widget-box   fl-wrap">
+                                    <div class="custom-form">
+                                        <div class="clearfix"></div>
+                                        
+                                        <div class=" add-list-tags fl-wrap">
+                                            <!-- Checkboxes -->
+                                            <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                            {{form.tag}}
+                                            </ul>
+                                            <!-- Checkboxes end -->												
+                                        </div>
+                                    </div>
+                                    {% if form.tag.errors %}
+                                        <div class="text-danger">{{ form.tag.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <input type="submit" class="btn    color-bg  float-btn" value="Publish"   style="border:none;">
+                    </form>
+                    {% else %}
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="dasboard-widget-title fl-wrap">
+                                    <h5><i class="fas fa-info"></i>Club Info</h5>
+                                </div>
+                                <div class="dasboard-widget-box fl-wrap">
+                                    <div class="custom-form">
+                                        
+                                        <label class="heading-font">Description <span class="dec-icon"><i class="fal fa-comment-alt-lines"></i></span></label>
+                                        <input name="description" type="text" class="" value="{{form.description}}">
+                                        {% if form.description.errors %}
+                                            <div class="text-danger">{{ form.description.errors|join:", " }}</div>
+                                        {% endif %}
+                                        <div class="pass-input-wrap fl-wrap">
+                                            <label>About </label>
+                                            <textarea name="about" class="" >{{form.about}}</textarea>
+                                            {% if form.about.errors %}
+                                                <div class="text-danger">{{ form.about.errors|join:", " }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn    color-bg  float-btn" value="Publish"   style="border:none;">
+                    </form>
+                    {% endif %}
+                </div>
+                <!-- dasboard-wrapper end -->
+            </div>
+            <!-- dashboard-footer -->
+            
+            <!-- dashboard-footer end -->
+        </div>
+        <!-- content end -->
+        <div class="dashbard-bg gray-bg"></div>
+    </div>
+    <!-- wrapper end -->
+</div>
+<!-- Main end -->
+{% endblock content %}

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html lang="en">
+
+<head>
+    <!--=============== basic  ===============-->
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %}</title>
+    {% block description %}{% endblock %}
+    <meta name="robots" content="index, follow" />
+    <meta name="keywords" content="Clubs - PES University" />
+    <!--=============== css  ===============-->
+    <link type="text/css" rel="stylesheet" href="{% static 'css/plugins.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/dashboard-style.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/color.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/custom-style.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/custom-form-style.css' %}">
+    <link type="text/css" rel="stylesheet" href="{% static 'css/dark-style.css' %}">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--=============== favicons ===============-->
+    <link rel="shortcut icon" href="{% static 'images/pes-favicon/favicon-16x16.png' %}">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"> -->
+    <!-- Google Tag Manager --> 
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); })(window,document,'script','dataLayer','GTM-N3XVVLXF');</script> 
+    <!-- End Google Tag Manager -->
+    <!--LeadSquared Tracking Code Start--> 
+    <script type="text/javascript" src="https://web-in21.mxradon.com/t/Tracker.js"></script> 
+    <script type="text/javascript"> 
+        pidTracker('57004'); 
+    </script> 
+    <!--LeadSquared Tracking Code End-->
+    <script>
+        // Log the message to the browser console
+        console.log("{{ message }}");
+    </script> 
+</head>
+
+<body>
+    <!-- Google Tag Manager (noscript) --> 
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N3XVVLXF" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> 
+    <!-- End Google Tag Manager (noscript) --> 
+    <!--loader-->
+    <div class="loader-wrap">
+        <div class="loader-inner">
+            <svg>
+                <defs>
+                    <filter id="goo">
+                        <fegaussianblur in="SourceGraphic" stdDeviation="2" result="blur" />
+                        <fecolormatrix in="blur"   values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 5 -2" result="gooey" />
+                        <fecomposite in="SourceGraphic" in2="gooey" operator="atop"/>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
+    </div>
+    <!--loader end-->
+
+    {% block content %}
+
+    {% endblock content %}
+
+    <!--=============== scripts  ===============-->
+    <script src="{% static 'js/custom-script.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/plugins.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOU_API_KEY_HERE&libraries=places"></script>
+    <script src="{% static 'js/map-add.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+
+</html>

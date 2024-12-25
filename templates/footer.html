@@ -1,0 +1,107 @@
+{% load static %}
+{% load custom_tags %}
+<!-- footer -->	
+<footer class="main-footer fl-wrap">
+   <div class="footer-inner fl-wrap">
+       <div class="container">
+           <div class="row">
+                                                 
+               <!-- footer widget-->
+               <div class="col-md-3">
+                   <div class="footer-widget fl-wrap">
+                       <div class="footer-widget-logo fl-wrap">
+                           <a href="{% url 'index' %}"><img class="logo-align" src="{% static 'images/white-logo.png' %}" alt=""></a>
+                       </div>
+                       <h5 class="footer-pesu-style">PES University</h5>
+                       <p>Outer Ring Road, Banashankari 3rd Stage, Banashankari, Bengaluru, Karnataka 560085</p>
+                       
+                   </div>
+               </div>
+               <!-- footer widget end-->
+
+
+               <!-- footer widget-->
+               <div class="col-md-3">
+                   <div class="footer-widget fl-wrap">
+                       <div class="footer-widget-title fl-wrap">
+                           <h4>Browse by Campus</h4>
+                       </div>
+                       <ul class="footer-list fl-wrap">
+                        {% for campus in campus|get_campus %}
+                           <li><a href="{% url 'campus' campus.campus_permalink %}">{{campus.campus_navbar}}</a></li>
+                        {% endfor %}
+                       </ul>
+                   </div>
+               </div>
+               <!-- footer widget end--> 
+               <!-- footer widget-->
+               <div class="col-md-3">
+                   <div class="footer-widget fl-wrap">
+                       <div class="footer-widget-title fl-wrap">
+                           <h4>Contact</h4>
+                       </div>
+                       <ul  class="footer-contacts fl-wrap">   
+                            <li>
+                                <span>
+                                <!-- <i class="fal fa-phone"></i> -->
+                                <a href="tel:8026721983"> +91 8026721983</a>
+                                </span>
+                            </li>
+                       </ul>
+                       <div class="footer-admissions-title fl-wrap">
+                            <h5>For Admissions</h5>
+                        </div>
+                        <ul  class="footer-contacts fl-wrap">   
+                            <li>
+                                <span>
+                                    <!-- <i class="fal fa-envelope"></i>  -->
+                                    <a href="mailto:admissions@pes.edu">admissions@pes.edu</a>
+                                </span>
+                            </li>
+                            <li>
+                                <span>
+                                <!-- <i class="fal fa-phone"></i> -->
+                                    <a href="tel:08010297297"> 080-10-297297</a>
+                                </span>
+                            </li>
+                        </ul>
+                       <div class="footer-social fl-wrap">
+                           <ul>
+                               <li><a href="https://www.facebook.com/pesuniversity" target="_blank"><i class="fab fa-facebook-f"></i></a></li>
+                               <li><a href="https://twitter.com/pesuniversity" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                               <li><a href="https://www.instagram.com/pesuniversity/" target="_blank"><i class="fab fa-instagram"></i></a></li>
+                               <li><a href="https://www.linkedin.com/school/pesuniversity/" target="_blank"><i class="fab fa-linkedin-in"></i></a></li>
+                               <li><a href="https://www.youtube.com/pesuniversity" target="_blank"><i class="fab fa-youtube"></i></a></li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+               <!-- footer widget end-->  
+                <!-- footer widget-->
+                <div class="col-md-3">
+                   <div class="footer-widget fl-wrap">
+                       <div class="footer-widget-title fl-wrap">
+                           <h4>Filter by Ribbons</h4>
+                       </div>
+                      
+                       <div class="api-links fl-wrap">
+                           <a href="{% url 'ribbon' 'popular' %}" class="api-btn color-bg footer-ribbons ribbon-green"><i class="fa fa-spinner fa-spin"></i> Popular </a>
+                           <a href="{% url 'ribbon' 'recomended' %}" class="api-btn color-bg footer-ribbons ribbon-red"><i class="fas fa-angle-double-right move-right"></i> Recomended </a>  
+                           <a href="{% url 'ribbon' 'new' %}" class="api-btn color-bg footer-ribbons ribbon-yellow"><i class="fas fa-angle-double-left move-left"></i> New</a>
+                       </div>
+                   </div>
+               </div>
+               <!-- footer widget end-->
+           </div>
+       </div>
+   </div>
+   <!--sub-footer-->
+   <div class="sub-footer gray-bg fl-wrap">
+       <div class="container">
+           <div class="copyright"> &#169; PES University | Powered by <a href="https://nith.ooo/" target="_blank"> NiTH</a></div>
+          
+       </div>
+   </div>
+   <!--sub-footer end -->                     
+</footer>
+<!-- footer end -->

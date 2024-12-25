@@ -1,0 +1,108 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load custom_tags %}
+{% block title %}{{club_details.title}} - Members{% endblock title %}
+{% block description %}<meta name="description" content="{% if club_details.description %}{{ club_details.description|truncatewords:25 }}{% else %}Clubs - PES University{% endif %}" />{% endblock %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <!-- wrapper  -->	
+    <div id="wrapper">
+        <!-- content -->	
+        <div class="content">
+            <!-- section -->
+            <section class="gray-bg small-padding">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <!-- list-main-wrap-title-->
+                            <a href="{% url 'club-details' club_details.permalink %}">
+                                <div class="list-main-wrap-title">
+                                    <h2>{{ club_details.title|upper }}: <strong>{{ club_details.member_set.all|length }}</strong></h2>
+                                </div>
+                            </a>
+                            <!-- list-main-wrap-title end-->  
+                        </div>
+                    </div>
+                    
+                    <!-- dashboard-title end -->		
+                    <div class="dasboard-wrapper fl-wrap">
+                        <div class="dasboard-listing-box fl-wrap">
+                            <!-- dashboard-listings-wrap-->
+                            <div class="dashboard-listings-wrap fl-wrap">
+                                <div class="row">
+                                    {% for member in club_details.member_set.all %}
+                                    <!-- dashboard-listings-item-->
+                                    <div class="col-md-3">
+                                        <!--  agent card item -->
+                                        <div class="listing-item">
+                                            <article class="geodir-category-listing fl-wrap">
+                                                <div class="geodir-category-img fl-wrap  agent_card">
+                                                    {% if member.student_co %}
+                                                    <a href="#" class="geodir_save-btn tolt" data-microtip-position="left" data-tooltip="Student Cordinator"><span><i class="fal fa-user-check"></i></span></a>
+                                                    {% endif %}
+                                                    {% if member.member_pic %}
+                                                    <img src="{{ member.member_pic.url }}" alt="">
+                                                    {% else %}
+                                                    <img src="{% static 'images/member.jpg' %}" alt="">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="geodir-category-content fl-wrap">
+                                                    
+                                                    <div class="agent_card-title fl-wrap">
+                                                        <h4><a>{{ member.member_name }}</a></h4>
+                                                        {% if member.pesu_register_no %}
+                                                        <h5><a>{{ member.pesu_register_no }}</a></h5>
+                                                        {% endif %}
+                                                        {% if member.department %}
+                                                        <h5><a>{{ member.department }}</a></h5>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="geodir-category-footer fl-wrap">
+                                                        {% if member.created_at %}
+                                                        <div class="custom-agent-card-facts">
+                                                            <div class="joined-date">Joined Club: <span>{{ member.created_at | date:"F Y" }}</span></div>
+                                                        </div>
+                                                        {% endif %}
+                                                        {% if member.email %} 
+                                                        <a href="mailto:{{member.email}}" class="tolt  ftr-btn" data-microtip-position="left" data-tooltip="Email"><i class="far fa-envelope"></i></a>
+                                                        {% endif %}
+                                                        {% if member.member_contact %}  
+                                                        <a href="tel:{{ member.member_contact }}" class="tolt  ftr-btn" data-microtip-position="left" data-tooltip="Call"><i class="far fa-phone"></i></a>
+                                                        {% endif %}
+                                                        
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </div>
+                                        <!--  agent card item end -->										
+                                    </div>
+                                    <!-- dashboard-listings-item end--> 									
+                                    {% endfor %}										
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- dashboard-listings-wrap end-->
+                </div>
+            </section>
+            <!-- section end-->	
+        </div>
+        <!-- content end -->	
+        
+        <!-- footer -->	
+        {% include 'footer.html' %}
+        <!-- footer end -->
+    </div>
+    <!-- wrapper end -->
+    <!--register form -->
+    {% include 'login.html' %}
+    <!--register form end -->
+    <a class="to-top color-bg"><i class="fas fa-caret-up"></i></a>
+</div>
+<!-- Main end -->         
+{% endblock content %}

@@ -1,0 +1,257 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}Dashboard{% endblock title %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    {% if request.user.is_authenticated %}
+            <!-- wrapper  -->	
+            <div id="wrapper">
+                <!-- dashbard-menu-wrap -->
+                <div class="dashbard-menu-overlay"></div>
+                    <!-- sidebar menu start -->
+                    {% include 'sidebar.html' %}
+                    <!-- sidebar menu end -->
+                    <!-- dashbard-menu-wrap end  -->
+                    {% if request.user.is_superuser or request.user|all_group %}
+                    <!-- content -->	
+                    <div class="dashboard-content">
+                        <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+                        <div class="container dasboard-container">
+                            <!-- dashboard-title -->
+                            <div class="dashboard-title fl-wrap">
+                                <div class="dashboard-title-item"><span>Dashboard</span></div>
+                                <div class="dashbard-menu-header">
+                                    <div class="dashbard-menu-avatar fl-wrap">
+                                        <a href="#">
+                                            <img src="{% static 'images/admin.jpg' %}" alt="">
+                                            <h4>{{ user.name | title}}</h4>
+                                        </a>
+                                    </div>
+                                    <a href="{% url 'logout-page' %}" class="log-out-btn   tolt" data-microtip-position="bottom" data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                                </div>
+                                                    
+                            </div>
+                                    
+                            
+                            <!-- dashboard-title end -->		
+                            <div class="dasboard-wrapper fl-wrap no-pag">
+                                
+                                <div class="dashboard-stats-container fl-wrap">
+                                    <div class="row">
+                                        {% if request.user.is_superuser or request.user|check_requested_permissions:'add_club' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'create-account' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fa fa-user-plus"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Create Club</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'change-password-form' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fas fa-key"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Change Password</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% if request.user|check_requested_permissions:'view_group' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'create-admin-user' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fa fa-user"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Users</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}
+                                        {% if request.user|check_requested_permissions:'view_permission' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'create_user_groups' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fa fa-users"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Groups</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}
+                                        
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'all-clubs' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fa fa-users"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count" >Clubs<span>(<strong>{{request.user|total_clubs}}</strong>)</span></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->		
+                                        {% if request.user|check_requested_permissions:'change_club' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'archive-page' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fa fa-archive"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count" >Archive<span>(<strong>{{request.user|archive_club}}</strong>)</span></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}
+                                        {% if request.user|check_requested_permissions:'view_campus' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'campus-settings' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fal fa-university"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count" >Add Campus</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}
+                                        {% if request.user|check_requested_permissions:'view_department' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'department-settings' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fal fa-school"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Add Department</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}	
+                                        {% if request.user|check_requested_permissions:'view_tag' %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4 dashboard-card-margine">
+                                            <a href="{% url 'tag-settings' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fal fa-tags"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Add Tag</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endif %}	
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                                    
+                    </div>
+                    <!-- content end -->
+
+                    {% else %}
+
+                    <!-- content -->	
+                    <div class="dashboard-content">
+                        <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+                        <div class="container dasboard-container">
+                            <!-- dashboard-title -->
+                            <div class="dashboard-title fl-wrap">
+                                <div class="dashboard-title-item"><span>Dashboard</span></div>
+                                <div class="dashbard-menu-header">
+                                    <div class="dashbard-menu-avatar fl-wrap">
+                                        {% if login_user_details.club_image and request.user.is_authenticated %}
+                                        <a href="{% url 'staff-details' login_user_details.pk %}">
+                                            <img src="{{login_user_details.club_image.url}}" alt="">
+                                            <h4>Welcome, <span>{{ request.user.user_id }}</span></h4>
+                                        </a>
+                                        {% else %}
+                                        <img src="{% static 'images/member.jpg' %}" alt="">
+                                        <h4>Welcome, <span>{{ request.user.name }} id:
+                                            {% for user in request.user.club_user.all %}
+                                            <span>{{ user }}</span>{% if not forloop.last %}, {% endif %}
+                                          {% endfor %}
+                                        </span></h4>
+                                        {% endif %}
+                                        
+                                    </div>
+                                    <a href="{% url 'logout-page' %}" class="log-out-btn   tolt" data-microtip-position="bottom" data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                                </div>
+                                                    
+                            </div>
+                        
+                                    
+                
+                            <!-- dashboard-title end -->		
+                            <div class="dasboard-wrapper fl-wrap no-pag bottom-margin-0">
+                                <div class="dashboard-stats-container fl-wrap">
+                                    <div class="row">
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4">
+                                            <a href="{% url 'change-password-form' %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fas fa-key"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">Change Password</div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->	
+                                            
+                                        {% for club in user.clubs.all %}
+                                        <!--dashboard-stats-->
+                                        <div class="col-md-4">
+                                            <a href="{% url 'club-details' club.permalink %}">
+                                                <div class="dashboard-stats fl-wrap">
+                                                    <i class="fas fa-info"></i>
+                                                    <h4></h4>
+                                                    <div class="dashboard-stats-count">{{club.title}} </div>
+ 
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <!-- dashboard-stats end -->
+                                        {% endfor %}
+                                            
+                                    </div>
+                                </div>
+                                
+                            <!-- dasboard-widget-box  end-->					
+                            </div>
+                                <div class="bottom-border fl-wrap">
+                                            
+                                </div>
+                            </div>
+                            <div>
+                                <div class="border-top">If you have any trouble updating club details, please contact <a href="mailto:media@pes.edu" class="color-blue"> media@pes.edu</a></div>
+                            </div>
+                        </div>
+                    {% endif %}	
+                </div>
+                <!-- content end -->	
+                <div class="dashbard-bg gray-bg"></div>
+            </div>
+            <!-- wrapper end -->
+    {% endif %}
+
+</div>
+<!-- Main end -->
+{% endblock content %}

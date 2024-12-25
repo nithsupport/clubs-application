@@ -1,0 +1,127 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}{% if staff_co_form.instance.pk %}Edit Staff Cordinator{% else %}Create Staff Cordinator{% endif %} - PES University{% endblock title %}
+{% block description %}<meta name="description" content="clubs - PES University" />{% endblock %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <div id="wrapper">
+        <!-- dashbard-menu-wrap -->
+        {% include 'club-sidebar.html' %}
+        <!-- dashbard-menu-wrap end  -->
+        <!-- content -->
+        <div class="dashboard-content">
+            <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+            <div class="container dasboard-container">
+                <!-- dashboard-title -->	
+                <div class="dashboard-title fl-wrap">
+                    <div class="dashboard-title-item"><span>Staff Cordinator</span></div>
+                    <div class="dashbard-menu-header">
+                        <div class="dashbard-menu-avatar fl-wrap">
+                            <a href="{% url 'club-details' club_detail.permalink %}">
+                                <img src="{% static 'images/admin.jpg' %}" alt="">
+                                <h4><span>{{ club_detail.title }}</span></h4>
+                            </a>
+                        </div>
+                        <a href="#" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                    </div>
+                                            
+                </div>
+                <!-- dashboard-title end -->
+                <!-- dashboard-title end -->
+                {% if messages %}
+                <div class="notification success-notif  fl-wrap">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                        <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
+                    </div>
+                {% endif %}
+                
+                <div class="dasboard-wrapper fl-wrap no-pag">
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- dasboard-widget-title -->
+                        <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec2">
+                            <h5><i class="fas fa-users"></i>Staff Cordinator</h5>
+                        </div>
+                        <!-- dasboard-widget-title end -->
+                        <!-- dasboard-widget-box  -->
+                        <div class="dasboard-widget-box   fl-wrap">
+                            <div class="custom-form">
+                                <div class="row">
+                                    <div class="col-sm-7">	
+                                        <label>Staff Name* <span class="dec-icon"><i class="far fa-user"></i></span></label>
+                                        {{ staff_co_form.staff_name }}
+                                        {% if staff_co_form.staff_name.errors %}
+                                            <div class="text-danger">{{ staff_co_form.staff_name.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Staff Designation <span class="dec-icon"><i class="far fa-envelope"></i></span></label>
+                                        {{ staff_co_form.staff_designation }}
+                                        {% if staff_co_form.staff_designation.errors %}
+                                            <div class="text-danger">{{ staff_co_form.staff_designation.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Staff Contact <span class="dec-icon"><i class="far fa-phone"></i></span></label>
+                                        {{ staff_co_form.staff_phone }}
+                                        {% if staff_co_form.staff_phone.errors %}
+                                            <div class="text-danger">{{ staff_co_form.staff_phone.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col-sm-5">
+
+                                        <label>Staff Profile URL <span class="dec-icon"><i class="far fa-registered"></i></span></label>
+                                        {{ staff_co_form.staff_url }}
+                                        {% if staff_co_form.staff_url.errors %}
+                                            <div class="text-danger">{{ staff_co_form.staff_url.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Staff Image URL <span class="dec-icon"><i class="far fa-phone"></i></span></label>
+                                        {{ staff_co_form.staff_pic_url }}
+                                        {% if staff_co_form.staff_pic_url.errors %}
+                                            <div class="text-danger">{{ staff_co_form.staff_pic_url.errors|join:", " }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- dasboard-widget-box  end-->
+
+                        <input type="submit" class="btn color-bg float-btn" value="Publish" style="border:none;">
+                    
+                    </form>
+                    
+                    {% if club_detail.staffcordinate_set.all %}
+                        <div class="dasboard-widget-title dwb-mar fl-wrap margin-top">
+                            <h5><i class="fal fa-mobile"></i>Staff Cordinator</h5>
+                        </div>
+                        <div class="dasboard-widget-box fl-wrap">
+                            <div class="custom-form">
+                                {% for staff_co in club_detail.staffcordinate_set.all %}
+                                <div class="col-md-6" style="padding: 0px 5px;">
+                                    <div class="pass-input-wrap fl-wrap">
+                                        <label><span class="dec-icon"><a href="{% url 'edit-staff-cordinate' club_detail.permalink staff_co.pk %}"  class="tolt" data-microtip-position="top-left" data-tooltip="Edit"><i class="far fa-edit color-blue"></i></a></span></label>
+                                        <input type="text" class="pass-input" value="{{ staff_co.staff_name }}" readonly>
+                                        <span class="eye"><a href="{% url 'delete-staff-cordinate' club_detail.permalink staff_co.pk %}" class="tolt" data-microtip-position="top-left" data-tooltip="Delete" ><i class="far fa-trash-alt color-blue"></i></a> </span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="limit-box fl-wrap"></div>
+        </div>
+        <!-- content end -->
+        <div class="dashbard-bg gray-bg"></div>
+    </div>
+    <!-- wrapper end -->
+</div>
+<!-- Main end -->
+{% endblock content %}

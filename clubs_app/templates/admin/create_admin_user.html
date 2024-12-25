@@ -1,0 +1,313 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %}{% if form.instance.club_id %}Edit User {% else %}Create User{% endif %} - PES University{% endblock title %}
+{% block content %}  
+<!-- main -->
+<div id="main">
+  <!-- header -->
+  {% include 'navbar.html' %}
+  <!-- header end  -->
+  <!-- wrapper  -->
+  <div id="wrapper">
+    <!-- dashbard-menu-wrap -->
+    <div class="dashbard-menu-overlay"></div>
+    <!-- sidebar menu start -->
+    {% include 'sidebar.html' %}
+    <!-- sidebar menu end -->
+    <!-- dashbard-menu-wrap end  -->
+    <!-- content -->
+    <div class="dashboard-content">
+        <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+        <div class="container dasboard-container">
+            <!-- dashboard-title -->
+            <div class="dashboard-title fl-wrap">
+                <div class="dashboard-title-item"><span>{% if form.instance.club_id %}Edit User {% else %}Create User{% endif %}</span>
+            </div>
+            <div class="dashbard-menu-header">
+                <div class="dashbard-menu-avatar fl-wrap">
+                    <a href="#">
+                        <img src="{% static 'images/admin.jpg' %}" alt="">
+                        <h4>{{ user.name | capfirst}}</h4>
+                    </a>
+                </div>
+                <a href="{% url 'logout-page' %}" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+            </div>
+                
+            </div>
+            <!-- dashboard-title end -->
+            {% if messages %}
+            <div class="notification success-notif  fl-wrap">
+                    {% for message in messages %}
+                    <p>{{ message }}</p>
+                    {% endfor %}
+                    <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
+                </div>
+            {% endif %}
+            <!-- dasboard-wrapper-->
+            <div class="dasboard-wrapper fl-wrap no-pag ">
+              
+                
+                <div class="row">
+                  {% if request.user|check_requested_permissions:'add_group' %}
+                  <div class="col-md-7">
+                      <form method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                        <div class="dasboard-widget-title fl-wrap">
+                            <h5><i class="fa fa-address-card"></i>Profile Image</h5>
+                        </div>
+                        <div class="dasboard-widget-box nopad-dash-widget-box fl-wrap">
+                            <div class="edit-profile-photo">
+                              {% if form.instance.pic %}
+                              <img src="{{ form.instance.pic.url }}" class="respimg" alt="">
+                          {% else %}
+                              <img src="{% static 'images/admin.jpg' %}" class="respimg" alt="">
+                          {% endif %}
+                          {% if request.user.is_superuser or request.user|all_group %}
+                            <div class="change-photo-btn">
+                                <div class="photoUpload">
+                                    <span>  Upload New Photo</span>
+                                    <input type="file" class="upload" name="pic">
+                                    {% if form.pic.errors %}
+                                        <div class="text-danger">{{ form.pic.errors|join:", " }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                          {% endif %}
+                            </div>
+                            <div class="bg-wrap bg-parallax-wrap-gradien">
+                                <div class="bg color-bg" data-bg=""></div>
+                            </div>
+                        </div>
+                        <div class="dasboard-widget-title fl-wrap">
+                            <h5><i class="fas fa-user"></i>User Info</h5>
+                        </div>
+                        <div class="dasboard-widget-box fl-wrap">
+                            <div class="custom-form">
+                                
+                                <label>Name *<span class="dec-icon"><i class="far fa-user"></i></span></label>
+                                {{form.name}}
+                                {% if form.name.errors %}
+                                    <div class="text-danger">{{ form.name.errors|join:", " }}</div>
+                                {% endif %}
+
+                                <div class="pass-input-wrap fl-wrap">
+                                  <label>Email * <span class="dec-icon"><i class="far fa-envelope"></i></span></label>
+                                  {{form.username}}
+                                  {% if form.username.errors %}
+                                      <div class="text-danger">{{ form.username.errors|join:", " }}</div>
+                                  {% endif %}
+                              </div>
+
+                              {% if not form.instance.pk %}
+                              <div class="pass-input-wrap fl-wrap">
+                                  <label>Password *<span class="dec-icon"><i class="far fa-lock-alt"></i></span></label>
+                                  {{form.password1}}
+                                  <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
+                                  {% if form.password1.errors %}
+                                      <div class="text-danger">{{ form.password1.errors|join:", " }}</div>
+                                  {% endif %}
+                              </div>
+
+                              <div class="pass-input-wrap fl-wrap">
+                                  <label>Confirm Password *<span class="dec-icon"><i class="far fa-shield-check"></i> </span></label>
+                                  {{form.password2}}
+                                  <span class="eye"><i class="far fa-eye" aria-hidden="true"></i> </span>
+                                  {% if form.password2.errors %}
+                                      <div class="text-danger">{{ form.password2.errors|join:", " }}</div>
+                                  {% endif %}
+                              </div>
+                              {% endif %}
+                                
+                            </div>
+                        </div>
+
+                        <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec7">
+                          <h5><i class="fas fa-sliders-h"></i>User Permissions / Groups</h5>
+                      </div>
+                        <div class="dasboard-widget-box   fl-wrap">
+                          <div class="custom-form">
+                              <div class="row">
+                                <!-- content-widget-switcher -->	
+                                <div class="col-md-6">
+                                  <label>User Permissions </label>
+                                  {% if request.user.is_superuser %}
+                                  <div class="content-widget-switcher fl-wrap">
+                                    <span class="content-widget-switcher-title">Superuser</span>
+                                    <div class="onoffswitch">
+                                      <input type="checkbox" name="is_superuser" class="onoffswitch-checkbox" id="is_superuser_switch" {% if form.instance.is_superuser %}checked{% endif %}>
+                                      <label class="onoffswitch-label" for="is_superuser_switch">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                      </label>
+                                    </div>
+                                  </div>
+
+                                  <script>
+                                  document.addEventListener('DOMContentLoaded', function() {
+                                    var isSuperUserSwitch = document.getElementById('is_superuser_switch');
+                                    
+                                    isSuperUserSwitch.addEventListener('change', function() {
+                                      if (this.checked) {
+                                        // Super user is ON
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      } else {
+                                        // Super user is OFF
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      }
+                                    });
+                                  });
+                                </script>
+                                {% endif %}
+                                  
+                                <div class="content-widget-switcher fl-wrap">
+                                  <span class="content-widget-switcher-title">Admin Panel Access</span>
+                                  <div class="onoffswitch">
+                                    <input type="checkbox" name="is_staff" class="onoffswitch-checkbox" id="is_staff_switch" {% if form.instance.is_staff %}checked{% endif %}>
+                                    <label class="onoffswitch-label" for="is_staff_switch">
+                                      <span class="onoffswitch-inner"></span>
+                                      <span class="onoffswitch-switch"></span>
+                                    </label>
+                                  </div>
+                                </div>
+                                <script>
+                                  document.addEventListener('DOMContentLoaded', function() {
+                                    var isclubSwitch = document.getElementById('is_staff_switch');
+                                    
+                                    isclubSwitch.addEventListener('change', function() {
+                                      if (this.checked) {
+                                        // club is ON
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      } else {
+                                        // club is OFF
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      }
+                                    });
+                                  });
+                                  
+                                </script>
+                                
+                                <div class="content-widget-switcher fl-wrap">
+                                  <span class="content-widget-switcher-title">Active</span>
+                                  <div class="onoffswitch">
+                                    <input type="checkbox" name="is_active" class="onoffswitch-checkbox" id="is_active_switch" {% if form.instance.is_active %}checked{% endif %}>
+                                    <label class="onoffswitch-label" for="is_active_switch">
+                                      <span class="onoffswitch-inner"></span>
+                                      <span class="onoffswitch-switch"></span>
+                                    </label>
+                                  </div>
+                                </div>
+    
+                                <script>
+                                  document.addEventListener('DOMContentLoaded', function() {
+                                    var isActiveSwitch = document.getElementById('is_active_switch');
+                                    
+                                    isActiveSwitch.addEventListener('change', function() {
+                                      if (this.checked) {
+                                        // Active is ON
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      } else {
+                                        // Active is OFF
+                                        this.nextElementSibling.querySelector('.onoffswitch-inner').textContent = '';
+                                      }
+                                    });
+                                  });
+                                  
+                                </script>
+                                </div>
+                                <!-- content-widget-switcher end-->
+                                  <!-- content-widget-switcher -->	
+                                  <div class="col-md-6">
+                                    <label for="{{ form.groups.id_for_label }}">Groups *</label>
+                                    
+                                      <div class="content-widget-switcher fl-wrap">
+                                          <div class="custom-form">
+                                              <div class="clearfix"></div>
+                                              <div class=" add-list-tags fl-wrap">
+                                                  <!-- Checkboxes -->
+                                                  <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                                    <div id="id_designations" class="form-input-field">
+                                                      <div> 
+                                                        <li>{{form.groups}}</li>
+                                                        {% if form.groups.errors %}
+                                                          <div class="text-danger">{{ form.groups.errors|join:", " }}</div>
+                                                        {% endif %}
+                                                      </div>
+                                                    </div>
+                                                  </ul>
+                                                </div>
+                                                <!-- Checkboxes end -->												
+                                              </div>
+                                            </div>
+                                            
+                                          </div>
+                                  <!-- content-widget-switcher end-->									  					  
+                              </div>
+                          </div>
+                      </div>
+
+                        <input type="submit" class="btn    color-bg  float-btn" value="Save Changes"   style="border:none;">
+                      </form>
+                    </div>
+                    {% endif %}
+                    {% if club_groups %}
+                    {% if request.user|check_requested_permissions:'view_group' %}
+                    <div class="col-md-5">
+                      <div class="dasboard-widget-title dbt-mm fl-wrap">
+                        <h5><i class="fas fa-user"></i>Users</h5>
+                    </div>
+                    
+                    {% for club_group in club_groups %}
+                        <div class="dashboard-listings-item fl-wrap">
+                            <div class="dashboard-listings-item_img">
+                                <div class="bg-wrap">
+                                  <div class="bg  "  data-bg="{% static 'images/admin.jpg' %}"></div>
+                                </div>
+                                <div class="overlay"></div>
+                                <a href="#" class="color-bg">View</a>
+                            </div>
+                            <div class="dashboard-listings-item_content">
+                                <h4><a href="#">{{club_group.clubuser.name | capfirst}}</a></h4>
+
+                                <div class="geodir-category-location">
+                                  <a href="#"><i class="fas fa-users"></i><span>{{club_group.group.name}}</span> </a>
+                                </div>
+
+                                <div class="clearfix"></div>
+                                <div class="dashboard-listings-item_opt">
+                                    <!-- {% if club_group.club.last_login %}<span class="viewed-counter"><i class="fas fa-eye"></i>   {{club_group.club.last_login}}</span>{% endif %} -->
+                                    <ul>
+                                      {% if request.user|check_requested_permissions:'change_group' %}
+                                        <li><a href="{% url 'edit-admin-user' club_group.clubuser_id %}" class="tolt" data-microtip-position="top-left" data-tooltip="Edit"><i class="far fa-edit"></i></a></li>
+                                      {% endif %}
+                                      {% if request.user.is_superuser %}
+                                        <li><a href="{% url 'admin-changing-password-form' club_group.clubuser_id %}" class="tolt" data-microtip-position="top-left" data-tooltip="Change Password"><i class="fas fa-key"></i></a></li>
+                                      {% endif %}
+                                      {% if request.user|check_requested_permissions:'delete_group' %}
+                                        <li><a href="{% url 'delete-group-user' club_group.clubuser_id %}" onclick="return confirm('Are you sure, want to Delete User '+ '{{club_group.club.name | title}}')" type='submit' class="tolt" data-microtip-position="top-left" data-tooltip="Delete"><i class="far fa-trash-alt"></i></a></li>
+                                      {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                    </div>
+                    {% endif %}
+                    {% endif %} 
+                </div>
+                
+            </div>
+            <!-- dasboard-wrapper end -->
+        </div>
+        <!-- dashboard-footer -->
+        
+        <!-- dashboard-footer end -->
+    </div>
+    <!-- content end -->
+    <div class="dashbard-bg gray-bg"></div>
+  </div>
+  <!-- wrapper end -->
+</div>
+<!-- Main end -->
+{% endblock %}

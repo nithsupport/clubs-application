@@ -1,0 +1,154 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block title %}{% if member_form.instance.pk %}Edit Members {% else %}Create Members{% endif %} - PES University{% endblock title %}
+{% block description %}<meta name="description" content="clubs - PES University" />{% endblock %}
+{% block content %}
+<!-- main -->
+<div id="main">
+    <!-- header -->
+    {% include 'navbar.html' %}
+    <!-- header end  -->
+    <div id="wrapper">
+        <!-- dashbard-menu-wrap -->
+        {% include 'club-sidebar.html' %}
+        <!-- dashbard-menu-wrap end  -->
+        <!-- content -->
+        <div class="dashboard-content">
+            <div class="dashboard-menu-btn color-bg"><span><i class="fas fa-bars"></i></span>Dasboard Menu</div>
+            <div class="container dasboard-container">
+                <!-- dashboard-title -->	
+                <div class="dashboard-title fl-wrap">
+                    <div class="dashboard-title-item"><span>Members</span></div>
+                    <div class="dashbard-menu-header">
+                        <div class="dashbard-menu-avatar fl-wrap">
+                            <a href="{% url 'club-details' club_detail.permalink %}">
+                                <img src="{% static 'images/admin.jpg' %}" alt="">
+                                <h4><span>{{ club_detail.title }}</span></h4>
+                            </a>
+                        </div>
+                        <a href="#" class="log-out-btn   tolt" data-microtip-position="bottom"  data-tooltip="Log Out"><i class="far fa-power-off"></i></a>
+                    </div>
+                                            
+                </div>
+                <!-- dashboard-title end -->
+                <!-- dashboard-title end -->
+                {% if messages %}
+                <div class="notification success-notif  fl-wrap">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                        <a class="notification-close" href="#"><i class="fal fa-times"></i></a>
+                    </div>
+                {% endif %}
+                
+                <div class="dasboard-wrapper fl-wrap no-pag">
+                    <form method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <!-- dasboard-widget-title -->
+                        <div class="dasboard-widget-title dwb-mar fl-wrap" id="sec2">
+                            <h5><i class="fas fa-users"></i>Members</h5>
+                        </div>
+                        <!-- dasboard-widget-title end -->
+                        <!-- dasboard-widget-box  -->
+                        <div class="dasboard-widget-box   fl-wrap">
+                            <div class="custom-form">
+                                <div class="row">
+                                    <div class="col-sm-7">	
+                                        <label>Member Name* <span class="dec-icon"><i class="far fa-user"></i></span></label>
+                                        {{ member_form.member_name }}
+                                        {% if member_form.member_name.errors %}
+                                            <div class="text-danger">{{ member_form.member_name.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Member Register N0. <span class="dec-icon"><i class="far fa-registered"></i></span></label>
+                                        {{ member_form.pesu_register_no }}
+                                        {% if member_form.pesu_register_no.errors %}
+                                            <div class="text-danger">{{ member_form.pesu_register_no.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Member Email <span class="dec-icon"><i class="far fa-envelope"></i></span></label>
+                                        {{ member_form.email }}
+                                        {% if member_form.email.errors %}
+                                            <div class="text-danger">{{ member_form.email.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Member Contact <span class="dec-icon"><i class="far fa-phone"></i></span></label>
+                                        {{ member_form.member_contact }}
+                                        {% if member_form.member_contact.errors %}
+                                            <div class="text-danger">{{ member_form.member_contact.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                        <label>Member Department* </label>
+                                        {{ member_form.department }}
+                                        {% if member_form.department.errors %}
+                                            <div class="text-danger">{{ member_form.department.errors|join:", " }}</div>
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="col-sm-5">
+                                        <label>Upload Images</label>
+                                        <div class="listsearch-input-item fl-wrap">
+                                            <div class="fuzone">
+                                                <div class="fu-text">
+                                                    <span><i class="far fa-cloud-upload-alt"></i> Click here or drop files to upload</span>
+                                                    <div class="photoUpload-files fl-wrap"></div>
+                                                </div>
+                                                {{ member_form.member_pic }}
+                                            </div>
+                                        </div>
+                                        <label>Student Coordinator </label>
+                                        <ul class="fl-wrap filter-tags no-list-style ds-tg">
+                                            <li>
+                                                {% for value, label in member_form.student_co.field.choices %}
+                                                    {% if value == member_form.initial.student_co %}
+                                                        <input type="radio" name="{{ member_form.student_co.name }}" value="{{ value }}" checked>
+                                                    {% else %}
+                                                        <input type="radio" name="{{ member_form.student_co.name }}" value="{{ value }}">
+                                                    {% endif %}
+                                                    <label class="radio inline">{{ label }}</label>
+                                                {% endfor %}
+    
+                                                {% if member_form.student_co.errors %}
+                                                    <div class="text-danger">{{ member_form.student_co.errors|join:", " }}</div>
+                                                {% endif %}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- dasboard-widget-box  end-->
+
+                        <input type="submit" class="btn color-bg float-btn" value="Publish" style="border:none;">
+                    
+                    </form>
+                    
+                    {% if club_detail.member_set.all %}
+                        <div class="dasboard-widget-title dwb-mar fl-wrap margin-top">
+                            <h5><i class="fal fa-mobile"></i>Members</h5>
+                        </div>
+                        <div class="dasboard-widget-box fl-wrap">
+                            <div class="custom-form">
+                                {% for member in club_detail.member_set.all %}
+                                <div class="col-md-6" style="padding: 0px 5px;">
+                                    <div class="pass-input-wrap fl-wrap">
+                                        <label><span class="dec-icon"><a href="{% url 'edit-member' club_detail.permalink member.pk %}"  class="tolt" data-microtip-position="top-left" data-tooltip="Edit"><i class="far fa-edit color-blue"></i></a></span></label>
+                                        <input type="text" class="pass-input" value="{{ member.member_name }}" readonly>
+                                        <span class="eye"><a href="{% url 'delete-member' club_detail.permalink member.pk %}" class="tolt" data-microtip-position="top-left" data-tooltip="Delete" ><i class="far fa-trash-alt color-blue"></i></a> </span>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="limit-box fl-wrap"></div>
+        </div>
+        <!-- content end -->
+        <div class="dashbard-bg gray-bg"></div>
+    </div>
+    <!-- wrapper end -->
+</div>
+<!-- Main end -->
+{% endblock content %}

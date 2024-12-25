@@ -1,0 +1,28 @@
+{% load static %}
+{% load custom_tags %}
+<div class="dashbard-menu-wrap">
+    <div class="dashbard-menu-close"><i class="fal fa-times"></i></div>
+    <div class="dashbard-menu-container">
+        <!-- user-profile-menu-->
+        <div class="user-profile-menu">
+            <h3>Main</h3>
+            <ul class="no-list-style">
+                {% if request.user.is_superuser or request.user|all_group %}
+                <li><a href="{% url 'edit-club-account' club_detail.permalink %}" {% if request.resolver_match.url_name == 'edit-club-account' %} class="user-profile-act" {% endif %}><i class="fa fa-user-plus"></i> Club Details </a></li>
+                {% endif %}
+                {% if club_detail.users.all|is_user_in:user %}
+                <li><a href="{% url 'user-edit-club-account' club_detail.permalink %}" {% if request.resolver_match.url_name == 'user-edit-club-account' %} class="user-profile-act" {% endif %}><i class="fa fa-user-plus"></i> Club Details </a></li>
+                {% endif %}
+                <li><a href="{% url 'create-staff-cordinate' club_detail.permalink %}" {% if request.resolver_match.url_name == 'create-staff-cordinate' %} class="user-profile-act" {% endif %}><i class="fas fa-user"></i> Staff Cordinator </a></li>
+                <li><a href="{% url 'create-member' club_detail.permalink %}" {% if request.resolver_match.url_name == 'create-member' %} class="user-profile-act" {% endif %}><i class="fas fa-users"></i> Members </a></li>
+                <li><a href="{% url 'create-award' club_detail.permalink %}" {% if request.resolver_match.url_name == 'create-award' %} class="user-profile-act" {% endif %}><i class="fas fa-trophy"></i> Awards </a></li>
+                <li><a href="{% url 'add-social-media' club_detail.permalink %}" {% if request.resolver_match.url_name == 'add-social-media' %} class="user-profile-act" {% endif %}><i class="fas fa-mobile"></i> Social Media </a></li>
+                
+                
+            </ul>
+        </div>
+        <!-- user-profile-menu end-->
+        
+    </div>
+    <div class="dashbard-menu-footer"> © PES University | Powered by <a href="https://nith.ooo/" target="_blank">Nith</a></div>
+</div>

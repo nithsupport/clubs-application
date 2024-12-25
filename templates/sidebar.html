@@ -1,0 +1,60 @@
+{% load static %}
+{% load custom_tags %}
+<div class="dashbard-menu-wrap">
+    <div class="dashbard-menu-close"><i class="fal fa-times"></i></div>
+    <div class="dashbard-menu-container">
+        <!-- user-profile-menu-->
+        <div class="user-profile-menu">
+            <h3>Main</h3>
+            <ul class="no-list-style">
+                {% if request.user|check_requested_permissions:'add_club' %}
+                <li><a href="{% url 'create-account' %}"   {% if request.resolver_match.url_name == 'create-account' %}class="user-profile-act" {% endif %}><i class="fa fa-user-plus"></i> Create Club </a></li>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                <li><a href="{% url 'change-password-form' %}" ><i class="fas fa-key"></i> Change Password </a></li>
+                {% endif %}
+                {% if request.user|check_requested_permissions:'view_group' %}
+                <li><a href="{% url 'create-admin-user' %}"   {% if request.resolver_match.url_name == 'create-admin-user' %}class="user-profile-act" {% endif %}><i class="fa fa-user"></i> Users </a></li>
+                {% endif %}
+                {% if request.user|check_requested_permissions:'view_permission' %}
+                <li><a href="{% url 'create_user_groups' %}"   {% if request.resolver_match.url_name == 'create_user_groups' %}class="user-profile-act" {% endif %}><i class="fa fa-users"></i> Groups </a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <!-- user-profile-menu end-->
+        <div class="user-profile-menu">
+            <h3>CLUB</h3>
+            <ul class="no-list-style">
+                {% for club in user.clubs.all %}
+                <li><a href="{% url 'club-details' club.permalink %}" ><i class="fa fa-user-plus"></i>{{club.title}} </a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- user-profile-menu-->
+        <div class="user-profile-menu">
+            <h3>LISTINGS</h3>
+            <ul class="no-list-style">
+                
+                <li><a href="{% url 'all-clubs' %}"  {% if request.resolver_match.url_name == 'all-clubs' %}class="user-profile-act" {% endif %}><i class="fa fa-users"></i> Club User<span class="color-orange">{{ request.user|total_clubs }}</span></a></li>
+                
+                {% if request.user|check_requested_permissions:'view_staff' %}
+                <li><a href="{% url 'archive-page' %}"  {% if request.resolver_match.url_name == 'archive-page' %}class="user-profile-act" {% endif %}><i class="fa fa-archive"></i> Archive<span class="color-orange">{{ request.user|archive_club }}</span></a></li>
+                {% endif %}
+
+                {% if request.user|check_requested_permissions:'view_campus' %}
+                <li><a href="{% url 'campus-settings' %}"  {% if request.resolver_match.url_name == 'campus-settings' %}class="user-profile-act" {% endif %}><i class="fal fa-university"></i> Campus </a></li>
+                {% endif %}
+                {% if request.user|check_requested_permissions:'view_department' %}
+                <li><a href="{% url 'department-settings' %}"  {% if request.resolver_match.url_name == 'department-settings' %}class="user-profile-act" {% endif %} ><i class="fal fa-school"></i> Department</a></li>
+                {% endif %}
+                {% if request.user|check_requested_permissions:'view_tag' %}
+                <li><a href="{% url 'tag-settings' %}"  {% if request.resolver_match.url_name == 'tag-settings' %}class="user-profile-act" {% endif %} ><i class="fal fa-tags"></i> Tag</a></li>
+                {% endif %}
+               
+                
+            </ul>
+        </div>
+        <!-- user-profile-menu end--> 
+    </div>
+    <div class="dashbard-menu-footer"> © PES University | Powered by <a href="https://nith.ooo/" target="_blank">Nith</a></div>
+</div>
